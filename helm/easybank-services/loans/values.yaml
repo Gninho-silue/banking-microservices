@@ -1,0 +1,29 @@
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+deploymentName: loans-deployment
+serviceName: loans
+appLabel: loans
+appName: loans
+
+replicaCount: 1
+
+image:
+  repository: gninho/loans
+  tag: 3.2
+
+containerPort: 8083
+
+service:
+  type: ClusterIP
+  port: 8083
+  targetPort: 8083
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true
+resouceserver_enabled: false
+otel_enabled: false
+kafka_enabled: false

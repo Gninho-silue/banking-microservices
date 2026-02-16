@@ -1,0 +1,66 @@
+services:
+  network-deploy-service:
+    networks:
+      - banking-net
+
+  microservice-base-config:
+    extends:
+      service: network-deploy-service
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-2.22.0.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+
+  microservice-configserver-config:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+  microservice-db-config:
+    extends:
+      service: network-deploy-service
+    image: mysql:8
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 20s
+      timeout: 5s
+      retries: 30
+      start_period: 240s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  microservice-eureka-config:
+    extends:
+      service: microservice-configserver-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+
+  microservice-service-config:
+    extends:
+      service: microservice-eureka-config
+    environment:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    healthcheck:
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+
+
+networks:
+  banking-net:
+    driver: bridge

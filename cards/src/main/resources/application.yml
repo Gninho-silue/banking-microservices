@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: cards
+
+  profiles:
+    active: "qa"
+
+  datasource:
+    url: jdbc:mysql://localhost:3308/cardsdb
+    username: root
+    password: root
+
+  jpa:
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      access: unrestricted
+    health:
+      probes:
+        enabled: true
+
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eurekaserver:8070/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+
+
+info:
+  app:
+    name: "cards"
+    description: "Easy Bank Cards Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      easybytes:
+        cards: DEBUG
+  pattern:
+    level: "%5p[${spring.application.name},%X{trace_id},%X{span_id}]"
+

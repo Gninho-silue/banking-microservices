@@ -1,0 +1,21 @@
+build:
+  version: "1.0"
+
+loans:
+  message: "Welcome to EazyBank loans related  Prod APIs "
+  contactDetails:
+    name: "Ninho - Product Owner"
+    email: "dev225tech@gmail.com"
+  onCallSupport:
+    - (212) 012-3456
+    - (212) 987-6543
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eurekaserver:8070/eureka/
+

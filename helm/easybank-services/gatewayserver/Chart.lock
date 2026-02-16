@@ -1,0 +1,6 @@
+dependencies:
+- name: easybank-common
+  repository: file://../../easybank-common
+  version: 0.1.0
+digest: sha256:0660b1bedda2da149f73cab639dedffe6ae7b4ed613146294da280eb67b9f42f
+generated: "2026-02-07T13:01:50.0203248+01:00"
