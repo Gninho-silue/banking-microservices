@@ -66,12 +66,21 @@ class LoansControllerTest {
     }
 
     @Test
-    void createWithMalformedMobileNumberIsRejected() throws Exception {
-        // Characterization of a known bug: the @Pattern violation surfaces as ConstraintViolationException,
-        // which the catch-all handler maps to 500 instead of 400. Fixed in the following commit.
+    void createWithMalformedMobileNumberReturns400() throws Exception {
         mockMvc.perform(post("/api/create").param("mobileNumber", "123"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.errorMessage").value(containsString("Mobile number must be 10 digits")));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.apiPath").value("uri=/api/create"))
+                .andExpect(jsonPath("$.errorCode").value("400 BAD_REQUEST"))
+                .andExpect(jsonPath("$.errorMessage").value("Mobile number must be 10 digits"));
+
+        verifyNoInteractions(loansService);
+    }
+
+    @Test
+    void fetchWithMalformedMobileNumberReturns400() throws Exception {
+        mockMvc.perform(get("/api/fetch").header(CORRELATION_HEADER, "corr-1").param("mobileNumber", "12ab"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").value(containsString("10 digits")));
 
         verifyNoInteractions(loansService);
     }
