@@ -1,9 +1,13 @@
 package com.easybytes.accounts.transfer;
 
+import com.easybytes.accounts.dto.AccountsDto;
+import com.easybytes.accounts.dto.CustomerDto;
 import com.easybytes.accounts.dto.TransferRequestDto;
 import com.easybytes.accounts.entity.Accounts;
+import com.easybytes.accounts.entity.Customer;
 import com.easybytes.accounts.exception.InsufficientFundsException;
 import com.easybytes.accounts.repository.AccountsRepository;
+import com.easybytes.accounts.repository.CustomerRepository;
 import com.easybytes.accounts.repository.OutboxEventRepository;
 import com.easybytes.accounts.repository.TransferRepository;
 import com.easybytes.accounts.service.IAccountsService;
@@ -49,6 +53,8 @@ class TransferIntegrationTest {
     private IAccountsService accountsService;
     @Autowired
     private AccountsRepository accountsRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
     @Autowired
     private TransferRepository transferRepository;
     @Autowired
@@ -188,6 +194,48 @@ class TransferIntegrationTest {
         assertThat(originals).isEqualTo(1);
         assertThat(balanceOf(a)).isEqualTo(new BigDecimal("75.00"));
         assertThat(balanceOf(b)).isEqualTo(new BigDecimal("25.00"));
+    }
+
+    @Test
+    void otherAccountUpdatesRunningConcurrentlyNeverLoseADeposit() throws Exception {
+        long a = newAccount("0");
+        Customer owner = new Customer();
+        owner.setName("Jane Doe");
+        owner.setEmail("jane@example.com");
+        owner.setMobileNumber("06" + (a % 100_000_000));
+        String ownerMobile = customerRepository.save(owner).getMobileNumber();
+        Long ownerId = customerRepository.findByMobileNumber(ownerMobile).orElseThrow().getCustomerId();
+        Accounts account = accountsRepository.findById(a).orElseThrow();
+        account.setCustomerId(ownerId);
+        accountsRepository.save(account);
+        AtomicLong counter = new AtomicLong();
+
+        // deposits interleaved with the Kafka communication callback and PUT /api/update
+        List<Future<Boolean>> results = runConcurrently(30, () -> {
+            long n = counter.incrementAndGet();
+            if (n % 3 == 0) {
+                accountsService.updateCommunicationStatus(a);
+            } else if (n % 3 == 1) {
+                CustomerDto update = new CustomerDto();
+                update.setName("Jane Doe");
+                update.setEmail("jane@example.com");
+                update.setMobileNumber(ownerMobile);
+                AccountsDto accountsDto = new AccountsDto();
+                accountsDto.setAccountNumber(a);
+                accountsDto.setAccountType("Savings");
+                accountsDto.setBranchAddress("123 Main Street, New York");
+                update.setAccountsDto(accountsDto);
+                accountsService.updateAccount(update);
+            } else {
+                accountsService.deposit(a, new BigDecimal("1.00"));
+            }
+            return true;
+        });
+        for (Future<Boolean> f : results) {
+            assertThat(f.get()).isTrue();
+        }
+
+        assertThat(balanceOf(a)).isEqualTo(new BigDecimal("10.00"));
     }
 
     @Test

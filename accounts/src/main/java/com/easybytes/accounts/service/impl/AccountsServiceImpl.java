@@ -88,11 +88,12 @@ public class AccountsServiceImpl implements IAccountsService {
      *         {@code false} otherwise
      */
     @Override
+    @Transactional // row lock: never merge a stale balance over a concurrent deposit/transfer
     public boolean updateAccount(CustomerDto customerDto) {
         boolean isUpdated = false;
         AccountsDto accountsDto = customerDto.getAccountsDto();
         if (accountsDto != null) {
-            Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
+            Accounts accounts = accountsRepository.findByIdForUpdate(accountsDto.getAccountNumber()).orElseThrow(
                     () -> new ResourceNotFoundException("Account", "AccountNumber",
                             accountsDto.getAccountNumber().toString()));
             AccountsMapper.toAccounts(accountsDto, accounts);
@@ -137,10 +138,11 @@ public class AccountsServiceImpl implements IAccountsService {
      * @return true if the communication status was successfully updated, false otherwise
      */
     @Override
+    @Transactional // row lock: never merge a stale balance over a concurrent deposit/transfer
     public boolean updateCommunicationStatus(Long accountNumber) {
         boolean isUpdated = false;
         if (accountNumber != null){
-            Accounts account = accountsRepository.findById(accountNumber).orElseThrow(
+            Accounts account = accountsRepository.findByIdForUpdate(accountNumber).orElseThrow(
                     () -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString())
             );
             account.setCommunicationSw(true);

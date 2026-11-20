@@ -195,7 +195,7 @@ class AccountsServiceImplTest {
         void updatesAccountAndCustomer() {
             Accounts existingAccount = account(7L, 1_234_567_890L);
             Customer existingCustomer = customer(7L);
-            when(accountsRepository.findById(1_234_567_890L)).thenReturn(Optional.of(existingAccount));
+            when(accountsRepository.findByIdForUpdate(1_234_567_890L)).thenReturn(Optional.of(existingAccount));
             when(accountsRepository.save(existingAccount)).thenReturn(existingAccount);
             when(customerRepository.findById(7L)).thenReturn(Optional.of(existingCustomer));
 
@@ -210,7 +210,7 @@ class AccountsServiceImplTest {
 
         @Test
         void throwsWhenAccountUnknown() {
-            when(accountsRepository.findById(99L)).thenReturn(Optional.empty());
+            when(accountsRepository.findByIdForUpdate(99L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.updateAccount(updateRequest(99L)))
                     .isInstanceOf(ResourceNotFoundException.class)
@@ -220,7 +220,7 @@ class AccountsServiceImplTest {
         @Test
         void throwsWhenAccountOwnerUnknown() {
             Accounts existingAccount = account(7L, 1_234_567_890L);
-            when(accountsRepository.findById(1_234_567_890L)).thenReturn(Optional.of(existingAccount));
+            when(accountsRepository.findByIdForUpdate(1_234_567_890L)).thenReturn(Optional.of(existingAccount));
             when(accountsRepository.save(existingAccount)).thenReturn(existingAccount);
             when(customerRepository.findById(7L)).thenReturn(Optional.empty());
 
@@ -266,7 +266,7 @@ class AccountsServiceImplTest {
         @Test
         void flagsCommunicationAsSent() {
             Accounts existing = account(7L, 1_234_567_890L);
-            when(accountsRepository.findById(1_234_567_890L)).thenReturn(Optional.of(existing));
+            when(accountsRepository.findByIdForUpdate(1_234_567_890L)).thenReturn(Optional.of(existing));
 
             assertThat(service.updateCommunicationStatus(1_234_567_890L)).isTrue();
 
@@ -276,7 +276,7 @@ class AccountsServiceImplTest {
 
         @Test
         void throwsWhenAccountUnknown() {
-            when(accountsRepository.findById(5L)).thenReturn(Optional.empty());
+            when(accountsRepository.findByIdForUpdate(5L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.updateCommunicationStatus(5L))
                     .isInstanceOf(ResourceNotFoundException.class);
