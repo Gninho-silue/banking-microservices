@@ -13,6 +13,7 @@ import com.easybytes.accounts.repository.AccountsRepository;
 import com.easybytes.accounts.repository.TransferRepository;
 import com.easybytes.accounts.service.ITransferService;
 import com.easybytes.accounts.service.TransferResult;
+import com.easybytes.accounts.service.outbox.OutboxWriter;
 import com.easybytes.accounts.service.rules.TransferRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,13 +47,16 @@ public class TransferServiceImpl implements ITransferService {
 
     private final AccountsRepository accountsRepository;
     private final TransferRepository transferRepository;
+    private final OutboxWriter outboxWriter;
     private final TransactionTemplate transactionTemplate;
 
     public TransferServiceImpl(AccountsRepository accountsRepository,
                                TransferRepository transferRepository,
+                               OutboxWriter outboxWriter,
                                PlatformTransactionManager transactionManager) {
         this.accountsRepository = accountsRepository;
         this.transferRepository = transferRepository;
+        this.outboxWriter = outboxWriter;
         this.transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
@@ -101,6 +105,7 @@ public class TransferServiceImpl implements ITransferService {
         transfer.setStatus(TransferStatus.COMPLETED);
         transfer.setIdempotencyKey(idempotencyKey);
         Transfer saved = transferRepository.saveAndFlush(transfer);
+        outboxWriter.transferCompleted(saved); // same transaction: event exists iff the transfer committed
         logger.info("Transfer {} completed: {} -> {} ({})", saved.getId(), saved.getFromAccount(),
                 saved.getToAccount(), saved.getAmount());
         return new TransferResult(TransferMapper.toTransferDto(saved), false);

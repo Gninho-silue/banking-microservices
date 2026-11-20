@@ -34,10 +34,17 @@ spring:
           group: ${spring.application.name}
         sendCommunication-out-0:
           destination: send-communication
+        transferCompleted-out-0:
+          destination: transfer-completed
       kafka:
         binder:
           brokers:
             - localhost:9092
+        bindings:
+          transferCompleted-out-0:
+            producer:
+              # wait for the broker ack, so an outbox row is marked published only once Kafka has it
+              sync: true
 
 
   data:
@@ -124,3 +131,9 @@ resilience4j:
         limit-for-period: 1
 
 
+
+outbox:
+  publisher:
+    enabled: true
+    fixed-delay: 1000   # ms between two relay runs
+    batch-size: 100

@@ -78,3 +78,15 @@ CREATE TABLE IF NOT EXISTS `transfers`
     INDEX `idx_transfers_from_account` (`from_account`),
     INDEX `idx_transfers_to_account` (`to_account`)
 );
+
+-- Transactional outbox: written in the same transaction as the transfer, relayed to Kafka by OutboxPublisher.
+CREATE TABLE IF NOT EXISTS `outbox_events`
+(
+    `id`           BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `aggregate_id` VARCHAR(64)  NOT NULL,
+    `type`         VARCHAR(100) NOT NULL,
+    `payload`      JSON         NOT NULL,
+    `created_at`   DATETIME(6)  NOT NULL,
+    `published_at` DATETIME(6)  NULL,
+    INDEX `idx_outbox_events_unpublished` (`published_at`, `id`)
+);

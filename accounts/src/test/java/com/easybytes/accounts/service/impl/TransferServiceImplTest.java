@@ -12,6 +12,7 @@ import com.easybytes.accounts.exception.ResourceNotFoundException;
 import com.easybytes.accounts.repository.AccountsRepository;
 import com.easybytes.accounts.repository.TransferRepository;
 import com.easybytes.accounts.service.TransferResult;
+import com.easybytes.accounts.service.outbox.OutboxWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,13 +53,15 @@ class TransferServiceImplTest {
     private TransferRepository transferRepository;
     @Mock
     private PlatformTransactionManager transactionManager;
+    @Mock
+    private OutboxWriter outboxWriter;
 
     private TransferServiceImpl service;
 
     @BeforeEach
     void setUp() {
         lenient().when(transactionManager.getTransaction(any())).thenReturn(new SimpleTransactionStatus());
-        service = new TransferServiceImpl(accountsRepository, transferRepository, transactionManager);
+        service = new TransferServiceImpl(accountsRepository, transferRepository, outboxWriter, transactionManager);
     }
 
     private static Accounts account(long number, String balance) {
@@ -132,6 +135,21 @@ class TransferServiceImplTest {
         }
 
         @Test
+        void writesTheTransferCompletedOutboxEventAfterSavingTheTransfer() {
+            when(transferRepository.findByIdempotencyKey(KEY)).thenReturn(Optional.empty());
+            givenLockedAccounts(account(A, "100.00"), account(B, "0.00"));
+            givenSaveAssignsId();
+
+            service.transfer(KEY, request(A, B, "1"));
+
+            InOrder order = inOrder(transferRepository, outboxWriter);
+            order.verify(transferRepository).saveAndFlush(any(Transfer.class));
+            ArgumentCaptor<Transfer> event = ArgumentCaptor.forClass(Transfer.class);
+            order.verify(outboxWriter).transferCompleted(event.capture());
+            assertThat(event.getValue().getId()).isEqualTo(10L);
+        }
+
+        @Test
         void locksBothAccountsInAscendingOrderEvenWhenSourceIsTheHigherNumber() {
             Accounts high = account(B, "100.00");
             Accounts low = account(A, "0.00");
@@ -160,6 +178,7 @@ class TransferServiceImplTest {
             assertThat(from.getBalance()).isEqualTo(new BigDecimal("10.00"));
             assertThat(to.getBalance()).isEqualTo(new BigDecimal("0.00"));
             verify(transferRepository, never()).saveAndFlush(any());
+            verifyNoInteractions(outboxWriter);
         }
 
         @Test
@@ -172,6 +191,7 @@ class TransferServiceImplTest {
                     .isInstanceOf(ResourceNotFoundException.class)
                     .hasMessage("Account not found with the given input data accountNumber: " + B);
             verify(transferRepository, never()).saveAndFlush(any());
+            verifyNoInteractions(outboxWriter);
         }
 
         @Test
@@ -206,6 +226,7 @@ class TransferServiceImplTest {
             assertThat(result.transfer().getId()).isEqualTo(10L);
             verifyNoInteractions(accountsRepository);
             verify(transferRepository, never()).saveAndFlush(any());
+            verifyNoInteractions(outboxWriter);
         }
 
         @Test
@@ -222,6 +243,7 @@ class TransferServiceImplTest {
             assertThat(result.replayed()).isTrue();
             assertThat(from.getBalance()).isEqualTo(new BigDecimal("100.00"));
             verify(transferRepository, never()).saveAndFlush(any());
+            verifyNoInteractions(outboxWriter);
         }
 
         @Test

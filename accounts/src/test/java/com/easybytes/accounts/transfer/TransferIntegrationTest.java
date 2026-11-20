@@ -4,6 +4,7 @@ import com.easybytes.accounts.dto.TransferRequestDto;
 import com.easybytes.accounts.entity.Accounts;
 import com.easybytes.accounts.exception.InsufficientFundsException;
 import com.easybytes.accounts.repository.AccountsRepository;
+import com.easybytes.accounts.repository.OutboxEventRepository;
 import com.easybytes.accounts.repository.TransferRepository;
 import com.easybytes.accounts.service.IAccountsService;
 import com.easybytes.accounts.service.ITransferService;
@@ -29,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * End-to-end transfer behaviour against a real MySQL (row locks, UNIQUE constraint, DECIMAL columns).
@@ -49,6 +51,8 @@ class TransferIntegrationTest {
     private AccountsRepository accountsRepository;
     @Autowired
     private TransferRepository transferRepository;
+    @Autowired
+    private OutboxEventRepository outboxEventRepository;
 
     private long newAccount(String initialDeposit) {
         Accounts account = new Accounts();
@@ -102,6 +106,25 @@ class TransferIntegrationTest {
         assertThat(balanceOf(b)).isEqualTo(new BigDecimal("33.33"));
         assertThat(transferRepository.findById(result.transfer().getId())).isPresent();
         assertThat(transferService.getTransfersForAccount(b)).hasSize(1);
+    }
+
+    @Test
+    void transferAndItsOutboxEventAreCommittedTogether() {
+        long a = newAccount("50.00");
+        long b = newAccount("0");
+        long before = outboxEventRepository.count();
+
+        TransferResult ok = transferService.transfer(UUID.randomUUID().toString(), request(a, b, "20.00"));
+        assertThatThrownBy(() -> transferService.transfer(UUID.randomUUID().toString(), request(a, b, "999.00")))
+                .isInstanceOf(InsufficientFundsException.class);
+
+        assertThat(outboxEventRepository.count()).isEqualTo(before + 1);
+        assertThat(outboxEventRepository.findAll())
+                .anySatisfy(e -> {
+                    assertThat(e.getAggregateId()).isEqualTo(String.valueOf(ok.transfer().getId()));
+                    assertThat(e.getType()).isEqualTo("TransferCompleted");
+                    assertThat(e.getPublishedAt()).isNull();
+                });
     }
 
     @Test

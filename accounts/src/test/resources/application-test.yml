@@ -29,3 +29,8 @@ management:
 logging:
   level:
     com.easybytes.accounts: INFO
+
+# Tests drive OutboxPublisher#publishPending() explicitly (except the Kafka integration test).
+outbox:
+  publisher:
+    enabled: false
