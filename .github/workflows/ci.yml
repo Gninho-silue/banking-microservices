@@ -25,10 +25,10 @@ jobs:
         service: [accounts, loans, cards, message, gatewayserver, configserver, eurekaserver]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK 21 (Temurin) with Maven cache
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload JaCoCo report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: jacoco-${{ matrix.service }}
           path: ${{ matrix.service }}/target/site/jacoco/
@@ -58,7 +58,7 @@ jobs:
 
       - name: Upload test reports on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: surefire-${{ matrix.service }}
           path: ${{ matrix.service }}/target/surefire-reports/
