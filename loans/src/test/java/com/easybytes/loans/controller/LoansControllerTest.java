@@ -1,0 +1,187 @@
+package com.easybytes.loans.controller;
+
+import com.easybytes.loans.dto.LoansDto;
+import com.easybytes.loans.exception.LoanAlreadyExistsException;
+import com.easybytes.loans.exception.ResourceNotFoundException;
+import com.easybytes.loans.service.ILoansService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(LoansController.class)
+@ActiveProfiles("test")
+class LoansControllerTest {
+
+    private static final String MOBILE = "0612345678";
+    private static final String CORRELATION_HEADER = "easybank-correlation-id";
+    private static final String VALID_LOAN = """
+            {"mobileNumber":"0612345678","loanNumber":"1234567890123456","loanType":"HOME",
+             "totalLoan":100000,"amountPaid":1000,"outstandingAmount":99000}
+            """;
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private ILoansService loansService;
+
+    @Test
+    void createReturns201() throws Exception {
+        mockMvc.perform(post("/api/create").param("mobileNumber", MOBILE))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.statusCode").value("201"))
+                .andExpect(jsonPath("$.statusMessage").value("Loan created successfully"));
+
+        verify(loansService).createLoan(MOBILE);
+    }
+
+    @Test
+    void createForExistingLoanReturns400() throws Exception {
+        doThrow(new LoanAlreadyExistsException("Loan already exists for mobile: " + MOBILE))
+                .when(loansService).createLoan(MOBILE);
+
+        mockMvc.perform(post("/api/create").param("mobileNumber", MOBILE))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.apiPath").value("uri=/api/create"))
+                .andExpect(jsonPath("$.errorCode").value("400 BAD_REQUEST"))
+                .andExpect(jsonPath("$.errorMessage").value("Loan already exists for mobile: " + MOBILE))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    void createWithMalformedMobileNumberIsRejected() throws Exception {
+        // Characterization of a known bug: the @Pattern violation surfaces as ConstraintViolationException,
+        // which the catch-all handler maps to 500 instead of 400. Fixed in the following commit.
+        mockMvc.perform(post("/api/create").param("mobileNumber", "123"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorMessage").value(containsString("Mobile number must be 10 digits")));
+
+        verifyNoInteractions(loansService);
+    }
+
+    @Test
+    void fetchReturnsLoan() throws Exception {
+        LoansDto dto = new LoansDto();
+        dto.setMobileNumber(MOBILE);
+        dto.setLoanNumber("1234567890123456");
+        dto.setTotalLoan(100_000);
+        when(loansService.fetchLoan(MOBILE)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/fetch").header(CORRELATION_HEADER, "corr-1").param("mobileNumber", MOBILE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.loanNumber").value("1234567890123456"))
+                .andExpect(jsonPath("$.totalLoan").value(100_000));
+    }
+
+    @Test
+    void fetchWithoutCorrelationHeaderReturns400() throws Exception {
+        mockMvc.perform(get("/api/fetch").param("mobileNumber", MOBILE))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(loansService);
+    }
+
+    @Test
+    void fetchUnknownLoanReturns404() throws Exception {
+        when(loansService.fetchLoan(MOBILE))
+                .thenThrow(new ResourceNotFoundException("Loans not found for mobile: " + MOBILE));
+
+        mockMvc.perform(get("/api/fetch").header(CORRELATION_HEADER, "corr-1").param("mobileNumber", MOBILE))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorCode").value("404 NOT_FOUND"))
+                .andExpect(jsonPath("$.errorMessage").value("Loans not found for mobile: " + MOBILE));
+    }
+
+    @Test
+    void updateReturns200WhenUpdated() throws Exception {
+        when(loansService.updateLoan(any())).thenReturn(true);
+
+        mockMvc.perform(put("/api/update").contentType(MediaType.APPLICATION_JSON).content(VALID_LOAN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value("200"));
+    }
+
+    @Test
+    void updateReturns417WhenNotUpdated() throws Exception {
+        when(loansService.updateLoan(any())).thenReturn(false);
+
+        mockMvc.perform(put("/api/update").contentType(MediaType.APPLICATION_JSON).content(VALID_LOAN))
+                .andExpect(status().isExpectationFailed())
+                .andExpect(jsonPath("$.statusCode").value("417"));
+    }
+
+    @Test
+    void updateWithInvalidBodyReturns400WithFieldErrors() throws Exception {
+        String invalid = """
+                {"mobileNumber":"12","loanNumber":"1234567890123456","loanType":"BOAT",
+                 "totalLoan":-1,"amountPaid":0,"outstandingAmount":0}
+                """;
+
+        mockMvc.perform(put("/api/update").contentType(MediaType.APPLICATION_JSON).content(invalid))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.mobileNumber").value("Mobile number must 10 digits"))
+                .andExpect(jsonPath("$.loanType").value("Loan Type must be HOME, PERSONAL or AUTO"))
+                .andExpect(jsonPath("$.totalLoan").value("Total loan must be >= 0"));
+
+        verifyNoInteractions(loansService);
+    }
+
+    @Test
+    void updateUnknownLoanReturns404() throws Exception {
+        when(loansService.updateLoan(any())).thenThrow(new ResourceNotFoundException("Loan not found"));
+
+        mockMvc.perform(put("/api/update").contentType(MediaType.APPLICATION_JSON).content(VALID_LOAN))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteReturns200WhenDeleted() throws Exception {
+        when(loansService.deleteLoan(MOBILE)).thenReturn(true);
+
+        mockMvc.perform(delete("/api/delete").param("mobileNumber", MOBILE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusMessage").value("Request processed successfully"));
+    }
+
+    @Test
+    void deleteReturns417WhenNotDeleted() throws Exception {
+        when(loansService.deleteLoan(MOBILE)).thenReturn(false);
+
+        mockMvc.perform(delete("/api/delete").param("mobileNumber", MOBILE))
+                .andExpect(status().isExpectationFailed())
+                .andExpect(jsonPath("$.statusCode").value("417"));
+    }
+
+    @Test
+    void unexpectedErrorReturns500WithErrorResponse() throws Exception {
+        when(loansService.fetchLoan(MOBILE)).thenThrow(new IllegalStateException("boom"));
+
+        mockMvc.perform(get("/api/fetch").header(CORRELATION_HEADER, "corr-1").param("mobileNumber", MOBILE))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorCode").value("500 INTERNAL_SERVER_ERROR"))
+                .andExpect(jsonPath("$.errorMessage").value("boom"));
+    }
+
+    @Test
+    void contactInfoReturns200() throws Exception {
+        mockMvc.perform(get("/api/contact"))
+                .andExpect(status().isOk());
+    }
+}
