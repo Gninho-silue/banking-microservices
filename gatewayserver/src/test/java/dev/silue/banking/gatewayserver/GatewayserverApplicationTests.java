@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver;
+package dev.silue.banking.gatewayserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

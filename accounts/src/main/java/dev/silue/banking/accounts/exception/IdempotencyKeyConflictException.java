@@ -1,4 +1,4 @@
-package com.easybytes.accounts.exception;
+package dev.silue.banking.accounts.exception;
 
 /**
  * An Idempotency-Key was replayed with a different payload. Mapped to HTTP 409.

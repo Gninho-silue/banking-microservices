@@ -1,4 +1,4 @@
-package com.easybytes.loans.dto;
+package dev.silue.banking.loans.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,12 @@
-package com.easybytes.loans.controller;
+package dev.silue.banking.loans.controller;
 
-import com.easybytes.loans.constants.LoansConstants;
-import com.easybytes.loans.dto.ContactInfoDto;
-import com.easybytes.loans.dto.ErrorResponseDto;
-import com.easybytes.loans.dto.LoanScheduleDto;
-import com.easybytes.loans.dto.LoansDto;
-import com.easybytes.loans.dto.ResponseDto;
-import com.easybytes.loans.service.ILoansService;
+import dev.silue.banking.loans.constants.LoansConstants;
+import dev.silue.banking.loans.dto.ContactInfoDto;
+import dev.silue.banking.loans.dto.ErrorResponseDto;
+import dev.silue.banking.loans.dto.LoanScheduleDto;
+import dev.silue.banking.loans.dto.LoansDto;
+import dev.silue.banking.loans.dto.ResponseDto;
+import dev.silue.banking.loans.service.ILoansService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

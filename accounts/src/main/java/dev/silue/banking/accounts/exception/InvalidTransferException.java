@@ -1,4 +1,4 @@
-package com.easybytes.accounts.exception;
+package dev.silue.banking.accounts.exception;
 
 /**
  * Raised when a transfer or deposit request breaks a business rule

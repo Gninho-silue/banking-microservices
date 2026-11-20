@@ -1,8 +1,8 @@
-package com.easybytes.accounts.controller;
+package dev.silue.banking.accounts.controller;
 
-import com.easybytes.accounts.dto.CustomerDetailsDto;
-import com.easybytes.accounts.exception.ResourceNotFoundException;
-import com.easybytes.accounts.service.ICustomerService;
+import dev.silue.banking.accounts.dto.CustomerDetailsDto;
+import dev.silue.banking.accounts.exception.ResourceNotFoundException;
+import dev.silue.banking.accounts.service.ICustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

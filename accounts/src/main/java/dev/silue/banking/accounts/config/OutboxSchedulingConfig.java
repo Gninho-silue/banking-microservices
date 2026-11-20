@@ -1,4 +1,4 @@
-package com.easybytes.accounts.config;
+package dev.silue.banking.accounts.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;

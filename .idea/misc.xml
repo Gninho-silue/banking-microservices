@@ -12,8 +12,8 @@
         <option value="$PROJECT_DIR$/gatewayserever/pom.xml" />
         <option value="$PROJECT_DIR$/gatewayserver/pom.xml" />
         <option value="$PROJECT_DIR$/message/pom.xml" />
-        <option value="$PROJECT_DIR$/easy-bom/pom.xml" />
-        <option value="$PROJECT_DIR$/easy-bom/common/pom.xml" />
+        <option value="$PROJECT_DIR$/banking-bom/pom.xml" />
+        <option value="$PROJECT_DIR$/banking-bom/common/pom.xml" />
       </list>
     </option>
   </component>

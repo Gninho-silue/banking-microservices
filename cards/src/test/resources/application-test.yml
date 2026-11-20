@@ -1,6 +1,6 @@
 # Test profile: run without Config Server, Eureka or Kafka.
 # The datasource is provided by Testcontainers (@ServiceConnection) in tests that need one.
-# Note: spring.cloud.config.enabled=false is also passed as a surefire system property (easy-bom),
+# Note: spring.cloud.config.enabled=false is also passed as a surefire system property (banking-bom),
 # because the configserver import in application.yml is resolved before profile files are read.
 spring:
   cloud:
@@ -24,4 +24,4 @@ eureka:
 
 logging:
   level:
-    com.easybytes.cards: INFO
+    dev.silue.banking.cards: INFO

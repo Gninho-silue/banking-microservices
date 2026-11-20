@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.easybytes</groupId>
-		<artifactId>easy-bom</artifactId>
+		<groupId>dev.silue.banking</groupId>
+		<artifactId>banking-bom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../easy-bom/pom.xml</relativePath>
+		<relativePath>../banking-bom/pom.xml</relativePath>
 	</parent>
-	<groupId>com.easybytes</groupId>
+	<groupId>dev.silue.banking</groupId>
 	<artifactId>message</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>message</name>

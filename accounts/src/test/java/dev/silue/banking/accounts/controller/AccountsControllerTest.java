@@ -1,11 +1,11 @@
-package com.easybytes.accounts.controller;
+package dev.silue.banking.accounts.controller;
 
-import com.easybytes.accounts.dto.AccountBalanceDto;
-import com.easybytes.accounts.dto.AccountsDto;
-import com.easybytes.accounts.dto.CustomerDto;
-import com.easybytes.accounts.exception.CustomerAlreadyExistsException;
-import com.easybytes.accounts.exception.ResourceNotFoundException;
-import com.easybytes.accounts.service.IAccountsService;
+import dev.silue.banking.accounts.dto.AccountBalanceDto;
+import dev.silue.banking.accounts.dto.AccountsDto;
+import dev.silue.banking.accounts.dto.CustomerDto;
+import dev.silue.banking.accounts.exception.CustomerAlreadyExistsException;
+import dev.silue.banking.accounts.exception.ResourceNotFoundException;
+import dev.silue.banking.accounts.service.IAccountsService;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

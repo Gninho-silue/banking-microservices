@@ -1,6 +1,6 @@
-package com.easybytes.loans.service.schedule;
+package dev.silue.banking.loans.service.schedule;
 
-import com.easybytes.loans.exception.InvalidLoanTermsException;
+import dev.silue.banking.loans.exception.InvalidLoanTermsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

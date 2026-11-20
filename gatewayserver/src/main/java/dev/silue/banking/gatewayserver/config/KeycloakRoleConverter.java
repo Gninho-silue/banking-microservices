@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver.config;
+package dev.silue.banking.gatewayserver.config;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;

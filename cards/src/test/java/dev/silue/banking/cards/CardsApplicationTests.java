@@ -1,8 +1,8 @@
-package com.easybytes.cards;
+package dev.silue.banking.cards;
 
-import com.easybytes.cards.controller.CardsController;
-import com.easybytes.cards.service.ICardsService;
-import com.easybytes.cards.support.MySqlTestContainerConfig;
+import dev.silue.banking.cards.controller.CardsController;
+import dev.silue.banking.cards.service.ICardsService;
+import dev.silue.banking.cards.support.MySqlTestContainerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

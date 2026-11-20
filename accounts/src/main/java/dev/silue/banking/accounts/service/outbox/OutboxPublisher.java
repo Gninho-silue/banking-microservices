@@ -1,7 +1,7 @@
-package com.easybytes.accounts.service.outbox;
+package dev.silue.banking.accounts.service.outbox;
 
-import com.easybytes.accounts.entity.OutboxEvent;
-import com.easybytes.accounts.repository.OutboxEventRepository;
+import dev.silue.banking.accounts.entity.OutboxEvent;
+import dev.silue.banking.accounts.repository.OutboxEventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

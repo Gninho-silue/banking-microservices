@@ -1,6 +1,6 @@
-package com.easybytes.accounts.service;
+package dev.silue.banking.accounts.service;
 
-import com.easybytes.accounts.dto.TransferDto;
+import dev.silue.banking.accounts.dto.TransferDto;
 
 /**
  * @param transfer the transfer (new, or the one previously stored for the Idempotency-Key)

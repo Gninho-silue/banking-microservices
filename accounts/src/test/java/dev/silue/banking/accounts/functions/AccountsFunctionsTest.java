@@ -1,6 +1,6 @@
-package com.easybytes.accounts.functions;
+package dev.silue.banking.accounts.functions;
 
-import com.easybytes.accounts.service.IAccountsService;
+import dev.silue.banking.accounts.service.IAccountsService;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;

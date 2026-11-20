@@ -1,6 +1,6 @@
-package com.easybytes.cards.service;
+package dev.silue.banking.cards.service;
 
-import com.easybytes.cards.dto.CardsDto;
+import dev.silue.banking.cards.dto.CardsDto;
 
 public interface ICardsService {
 

@@ -1,7 +1,7 @@
-package com.easybytes.loans.service;
+package dev.silue.banking.loans.service;
 
-import com.easybytes.loans.dto.LoanScheduleDto;
-import com.easybytes.loans.dto.LoansDto;
+import dev.silue.banking.loans.dto.LoanScheduleDto;
+import dev.silue.banking.loans.dto.LoansDto;
 
 public interface ILoansService {
 

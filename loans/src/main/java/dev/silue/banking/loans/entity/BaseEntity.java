@@ -1,4 +1,4 @@
-package com.easybytes.loans.entity;
+package dev.silue.banking.loans.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,7 +1,7 @@
-package com.easybytes.accounts.mapper;
+package dev.silue.banking.accounts.mapper;
 
-import com.easybytes.accounts.dto.TransferDto;
-import com.easybytes.accounts.entity.Transfer;
+import dev.silue.banking.accounts.dto.TransferDto;
+import dev.silue.banking.accounts.entity.Transfer;
 
 public class TransferMapper {
 

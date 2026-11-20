@@ -1,4 +1,4 @@
-package com.easybytes.accounts.entity;
+package dev.silue.banking.accounts.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

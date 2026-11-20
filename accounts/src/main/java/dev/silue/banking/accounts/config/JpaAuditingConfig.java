@@ -1,4 +1,4 @@
-package com.easybytes.accounts.config;
+package dev.silue.banking.accounts.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

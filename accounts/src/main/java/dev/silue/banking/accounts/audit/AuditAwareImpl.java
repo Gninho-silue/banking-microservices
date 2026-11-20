@@ -1,4 +1,4 @@
-package com.easybytes.accounts.audit;
+package dev.silue.banking.accounts.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;

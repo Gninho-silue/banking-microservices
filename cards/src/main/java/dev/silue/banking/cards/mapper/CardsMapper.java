@@ -1,7 +1,7 @@
-package com.easybytes.cards.mapper;
+package dev.silue.banking.cards.mapper;
 
-import com.easybytes.cards.dto.CardsDto;
-import com.easybytes.cards.entity.Cards;
+import dev.silue.banking.cards.dto.CardsDto;
+import dev.silue.banking.cards.entity.Cards;
 
 public class CardsMapper {
 

@@ -1,6 +1,6 @@
-package com.easybytes.accounts.repository;
+package dev.silue.banking.accounts.repository;
 
-import com.easybytes.accounts.entity.Transfer;
+import dev.silue.banking.accounts.entity.Transfer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

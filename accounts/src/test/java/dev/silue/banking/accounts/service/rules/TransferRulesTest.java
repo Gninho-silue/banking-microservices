@@ -1,6 +1,6 @@
-package com.easybytes.accounts.service.rules;
+package dev.silue.banking.accounts.service.rules;
 
-import com.easybytes.accounts.exception.InvalidTransferException;
+import dev.silue.banking.accounts.exception.InvalidTransferException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

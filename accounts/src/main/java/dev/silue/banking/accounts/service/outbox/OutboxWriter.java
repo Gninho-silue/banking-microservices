@@ -1,8 +1,8 @@
-package com.easybytes.accounts.service.outbox;
+package dev.silue.banking.accounts.service.outbox;
 
-import com.easybytes.accounts.entity.OutboxEvent;
-import com.easybytes.accounts.entity.Transfer;
-import com.easybytes.accounts.repository.OutboxEventRepository;
+import dev.silue.banking.accounts.entity.OutboxEvent;
+import dev.silue.banking.accounts.entity.Transfer;
+import dev.silue.banking.accounts.repository.OutboxEventRepository;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 

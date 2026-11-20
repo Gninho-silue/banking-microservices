@@ -1,6 +1,6 @@
-package com.easybytes.accounts.service;
+package dev.silue.banking.accounts.service;
 
-import com.easybytes.accounts.dto.CustomerDetailsDto;
+import dev.silue.banking.accounts.dto.CustomerDetailsDto;
 
 public interface ICustomerService {
     /**

@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver.config;
+package dev.silue.banking.gatewayserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

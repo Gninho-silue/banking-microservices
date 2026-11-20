@@ -1,4 +1,4 @@
-package com.easybytes.cards.dto;
+package dev.silue.banking.cards.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

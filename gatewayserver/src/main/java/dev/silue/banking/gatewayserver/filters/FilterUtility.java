@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver.filters;
+package dev.silue.banking.gatewayserver.filters;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

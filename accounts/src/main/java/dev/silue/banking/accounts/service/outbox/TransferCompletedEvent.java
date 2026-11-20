@@ -1,4 +1,4 @@
-package com.easybytes.accounts.service.outbox;
+package dev.silue.banking.accounts.service.outbox;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

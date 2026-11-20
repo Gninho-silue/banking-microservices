@@ -1,8 +1,8 @@
-package com.easybytes.cards.exception;
+package dev.silue.banking.cards.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import com.easybytes.cards.dto.ErrorResponseDto;
+import dev.silue.banking.cards.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

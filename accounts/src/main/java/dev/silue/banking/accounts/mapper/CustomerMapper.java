@@ -1,8 +1,8 @@
-package com.easybytes.accounts.mapper;
+package dev.silue.banking.accounts.mapper;
 
-import com.easybytes.accounts.dto.CustomerDetailsDto;
-import com.easybytes.accounts.dto.CustomerDto;
-import com.easybytes.accounts.entity.Customer;
+import dev.silue.banking.accounts.dto.CustomerDetailsDto;
+import dev.silue.banking.accounts.dto.CustomerDto;
+import dev.silue.banking.accounts.entity.Customer;
 
 public class CustomerMapper {
     public static CustomerDto toCustomerDto(Customer customer, CustomerDto customerDto) {

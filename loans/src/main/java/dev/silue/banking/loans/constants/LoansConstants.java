@@ -1,4 +1,4 @@
-package com.easybytes.loans.constants;
+package dev.silue.banking.loans.constants;
 
 import java.math.BigDecimal;
 

@@ -1,12 +1,12 @@
-package com.easybytes.loans.controller;
+package dev.silue.banking.loans.controller;
 
-import com.easybytes.loans.dto.LoanScheduleDto;
-import com.easybytes.loans.dto.LoansDto;
-import com.easybytes.loans.exception.InvalidLoanTermsException;
-import com.easybytes.loans.exception.LoanAlreadyExistsException;
-import com.easybytes.loans.exception.ResourceNotFoundException;
-import com.easybytes.loans.service.ILoansService;
-import com.easybytes.loans.service.schedule.Installment;
+import dev.silue.banking.loans.dto.LoanScheduleDto;
+import dev.silue.banking.loans.dto.LoansDto;
+import dev.silue.banking.loans.exception.InvalidLoanTermsException;
+import dev.silue.banking.loans.exception.LoanAlreadyExistsException;
+import dev.silue.banking.loans.exception.ResourceNotFoundException;
+import dev.silue.banking.loans.service.ILoansService;
+import dev.silue.banking.loans.service.schedule.Installment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

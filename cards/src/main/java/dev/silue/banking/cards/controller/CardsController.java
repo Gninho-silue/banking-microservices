@@ -1,11 +1,11 @@
-package com.easybytes.cards.controller;
+package dev.silue.banking.cards.controller;
 
-import com.easybytes.cards.constants.CardsConstants;
-import com.easybytes.cards.dto.CardsDto;
-import com.easybytes.cards.dto.ContactInfoDto;
-import com.easybytes.cards.dto.ErrorResponseDto;
-import com.easybytes.cards.dto.ResponseDto;
-import com.easybytes.cards.service.ICardsService;
+import dev.silue.banking.cards.constants.CardsConstants;
+import dev.silue.banking.cards.dto.CardsDto;
+import dev.silue.banking.cards.dto.ContactInfoDto;
+import dev.silue.banking.cards.dto.ErrorResponseDto;
+import dev.silue.banking.cards.dto.ResponseDto;
+import dev.silue.banking.cards.service.ICardsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

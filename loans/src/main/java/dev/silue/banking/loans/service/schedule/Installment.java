@@ -1,4 +1,4 @@
-package com.easybytes.loans.service.schedule;
+package dev.silue.banking.loans.service.schedule;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

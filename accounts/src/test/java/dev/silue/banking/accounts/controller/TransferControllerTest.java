@@ -1,13 +1,13 @@
-package com.easybytes.accounts.controller;
+package dev.silue.banking.accounts.controller;
 
-import com.easybytes.accounts.dto.TransferDto;
-import com.easybytes.accounts.dto.TransferRequestDto;
-import com.easybytes.accounts.exception.IdempotencyKeyConflictException;
-import com.easybytes.accounts.exception.InsufficientFundsException;
-import com.easybytes.accounts.exception.InvalidTransferException;
-import com.easybytes.accounts.exception.ResourceNotFoundException;
-import com.easybytes.accounts.service.ITransferService;
-import com.easybytes.accounts.service.TransferResult;
+import dev.silue.banking.accounts.dto.TransferDto;
+import dev.silue.banking.accounts.dto.TransferRequestDto;
+import dev.silue.banking.accounts.exception.IdempotencyKeyConflictException;
+import dev.silue.banking.accounts.exception.InsufficientFundsException;
+import dev.silue.banking.accounts.exception.InvalidTransferException;
+import dev.silue.banking.accounts.exception.ResourceNotFoundException;
+import dev.silue.banking.accounts.service.ITransferService;
+import dev.silue.banking.accounts.service.TransferResult;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;

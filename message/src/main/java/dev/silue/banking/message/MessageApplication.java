@@ -1,4 +1,4 @@
-package com.easybytes.message;
+package dev.silue.banking.message;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

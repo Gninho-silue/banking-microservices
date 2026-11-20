@@ -1,6 +1,6 @@
-package com.easybytes.accounts.functions;
+package dev.silue.banking.accounts.functions;
 
-import com.easybytes.accounts.service.IAccountsService;
+import dev.silue.banking.accounts.service.IAccountsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

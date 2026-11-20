@@ -1,4 +1,4 @@
-package com.easybytes.accounts.constants;
+package dev.silue.banking.accounts.constants;
 
 
 public final class AccountsConstants {

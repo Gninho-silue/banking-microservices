@@ -1,7 +1,7 @@
-package com.easybytes.message.function;
+package dev.silue.banking.message.function;
 
-import com.easybytes.message.dto.AccountsMsgDto;
-import com.easybytes.message.dto.TransferCompletedDto;
+import dev.silue.banking.message.dto.AccountsMsgDto;
+import dev.silue.banking.message.dto.TransferCompletedDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

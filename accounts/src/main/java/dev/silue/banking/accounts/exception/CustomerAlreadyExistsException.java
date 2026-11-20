@@ -1,4 +1,4 @@
-package com.easybytes.accounts.exception;
+package dev.silue.banking.accounts.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

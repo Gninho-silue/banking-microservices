@@ -1,11 +1,11 @@
-package com.easybytes.cards.service.impl;
+package dev.silue.banking.cards.service.impl;
 
-import com.easybytes.cards.constants.CardsConstants;
-import com.easybytes.cards.dto.CardsDto;
-import com.easybytes.cards.entity.Cards;
-import com.easybytes.cards.exception.CardAlreadyExistsException;
-import com.easybytes.cards.exception.ResourceNotFoundException;
-import com.easybytes.cards.repository.CardsRepository;
+import dev.silue.banking.cards.constants.CardsConstants;
+import dev.silue.banking.cards.dto.CardsDto;
+import dev.silue.banking.cards.entity.Cards;
+import dev.silue.banking.cards.exception.CardAlreadyExistsException;
+import dev.silue.banking.cards.exception.ResourceNotFoundException;
+import dev.silue.banking.cards.repository.CardsRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

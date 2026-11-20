@@ -1,6 +1,6 @@
-package com.easybytes.loans.service.schedule;
+package dev.silue.banking.loans.service.schedule;
 
-import com.easybytes.loans.exception.InvalidLoanTermsException;
+import dev.silue.banking.loans.exception.InvalidLoanTermsException;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

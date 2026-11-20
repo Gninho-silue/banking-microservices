@@ -1,9 +1,9 @@
-package com.easybytes.loans.repository;
+package dev.silue.banking.loans.repository;
 
-import com.easybytes.loans.audit.AuditAwareImpl;
-import com.easybytes.loans.config.JpaAuditingConfig;
-import com.easybytes.loans.entity.Loans;
-import com.easybytes.loans.support.MySqlTestContainerConfig;
+import dev.silue.banking.loans.audit.AuditAwareImpl;
+import dev.silue.banking.loans.config.JpaAuditingConfig;
+import dev.silue.banking.loans.entity.Loans;
+import dev.silue.banking.loans.support.MySqlTestContainerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;

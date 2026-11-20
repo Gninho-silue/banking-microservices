@@ -1,6 +1,6 @@
-package com.easybytes.cards.repository;
+package dev.silue.banking.cards.repository;
 
-import com.easybytes.cards.entity.Cards;
+import dev.silue.banking.cards.entity.Cards;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.easybytes.message.dto;
+package dev.silue.banking.message.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

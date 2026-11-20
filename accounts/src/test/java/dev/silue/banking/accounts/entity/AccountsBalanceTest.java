@@ -1,6 +1,6 @@
-package com.easybytes.accounts.entity;
+package dev.silue.banking.accounts.entity;
 
-import com.easybytes.accounts.exception.InsufficientFundsException;
+import dev.silue.banking.accounts.exception.InsufficientFundsException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

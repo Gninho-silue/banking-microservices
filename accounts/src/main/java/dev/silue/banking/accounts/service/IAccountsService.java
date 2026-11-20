@@ -1,7 +1,7 @@
-package com.easybytes.accounts.service;
+package dev.silue.banking.accounts.service;
 
-import com.easybytes.accounts.dto.AccountBalanceDto;
-import com.easybytes.accounts.dto.CustomerDto;
+import dev.silue.banking.accounts.dto.AccountBalanceDto;
+import dev.silue.banking.accounts.dto.CustomerDto;
 
 import java.math.BigDecimal;
 

@@ -1,7 +1,7 @@
-package com.easybytes.message.function;
+package dev.silue.banking.message.function;
 
-import com.easybytes.message.dto.AccountsMsgDto;
-import com.easybytes.message.dto.TransferCompletedDto;
+import dev.silue.banking.message.dto.AccountsMsgDto;
+import dev.silue.banking.message.dto.TransferCompletedDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.CapturedOutput;

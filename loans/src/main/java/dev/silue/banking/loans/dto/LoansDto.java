@@ -1,4 +1,4 @@
-package com.easybytes.loans.dto;
+package dev.silue.banking.loans.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

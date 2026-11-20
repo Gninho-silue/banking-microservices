@@ -1,7 +1,7 @@
-package com.easybytes.accounts.mapper;
+package dev.silue.banking.accounts.mapper;
 
-import com.easybytes.accounts.dto.AccountsDto;
-import com.easybytes.accounts.entity.Accounts;
+import dev.silue.banking.accounts.dto.AccountsDto;
+import dev.silue.banking.accounts.entity.Accounts;
 
 public class AccountsMapper {
 

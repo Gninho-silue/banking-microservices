@@ -1,7 +1,7 @@
-package com.easybytes.loans.mapper;
+package dev.silue.banking.loans.mapper;
 
-import com.easybytes.loans.dto.LoansDto;
-import com.easybytes.loans.entity.Loans;
+import dev.silue.banking.loans.dto.LoansDto;
+import dev.silue.banking.loans.entity.Loans;
 
 public class LoansMapper {
 

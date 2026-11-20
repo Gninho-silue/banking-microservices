@@ -1,8 +1,8 @@
-package com.easybytes.loans;
+package dev.silue.banking.loans;
 
-import com.easybytes.loans.controller.LoansController;
-import com.easybytes.loans.service.ILoansService;
-import com.easybytes.loans.support.MySqlTestContainerConfig;
+import dev.silue.banking.loans.controller.LoansController;
+import dev.silue.banking.loans.service.ILoansService;
+import dev.silue.banking.loans.support.MySqlTestContainerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

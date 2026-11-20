@@ -1,4 +1,4 @@
-package com.easybytes.common;
+package dev.silue.banking.common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

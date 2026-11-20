@@ -48,9 +48,7 @@ info:
 
 logging:
   level:
-    com:
-      easybytes:
-        gatewayserver: DEBUG
+    dev.silue.banking.gatewayserver: DEBUG
   pattern:
     level: "%5p[${spring.application.name},%X{trace_id},%X{span_id}]"
 

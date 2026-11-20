@@ -1,10 +1,10 @@
-package com.easybytes.accounts;
+package dev.silue.banking.accounts;
 
-import com.easybytes.accounts.controller.AccountsController;
-import com.easybytes.accounts.controller.CustomerController;
-import com.easybytes.accounts.service.IAccountsService;
-import com.easybytes.accounts.service.ICustomerService;
-import com.easybytes.accounts.support.MySqlTestContainerConfig;
+import dev.silue.banking.accounts.controller.AccountsController;
+import dev.silue.banking.accounts.controller.CustomerController;
+import dev.silue.banking.accounts.service.IAccountsService;
+import dev.silue.banking.accounts.service.ICustomerService;
+import dev.silue.banking.accounts.support.MySqlTestContainerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

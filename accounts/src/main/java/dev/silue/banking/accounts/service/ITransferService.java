@@ -1,7 +1,7 @@
-package com.easybytes.accounts.service;
+package dev.silue.banking.accounts.service;
 
-import com.easybytes.accounts.dto.TransferDto;
-import com.easybytes.accounts.dto.TransferRequestDto;
+import dev.silue.banking.accounts.dto.TransferDto;
+import dev.silue.banking.accounts.dto.TransferRequestDto;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package com.easybytes.accounts.repository;
+package dev.silue.banking.accounts.repository;
 
-import com.easybytes.accounts.audit.AuditAwareImpl;
-import com.easybytes.accounts.config.JpaAuditingConfig;
-import com.easybytes.accounts.entity.Accounts;
-import com.easybytes.accounts.entity.Customer;
-import com.easybytes.accounts.support.MySqlTestContainerConfig;
+import dev.silue.banking.accounts.audit.AuditAwareImpl;
+import dev.silue.banking.accounts.config.JpaAuditingConfig;
+import dev.silue.banking.accounts.entity.Accounts;
+import dev.silue.banking.accounts.entity.Customer;
+import dev.silue.banking.accounts.support.MySqlTestContainerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;

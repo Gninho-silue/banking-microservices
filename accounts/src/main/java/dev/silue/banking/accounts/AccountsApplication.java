@@ -1,6 +1,6 @@
-package com.easybytes.accounts;
+package dev.silue.banking.accounts;
 
-import com.easybytes.accounts.dto.ContactInfoDto;
+import dev.silue.banking.accounts.dto.ContactInfoDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;

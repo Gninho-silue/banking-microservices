@@ -1,16 +1,16 @@
-package com.easybytes.loans.service.impl;
+package dev.silue.banking.loans.service.impl;
 
-import com.easybytes.loans.constants.LoansConstants;
-import com.easybytes.loans.dto.LoansDto;
-import com.easybytes.loans.entity.Loans;
-import com.easybytes.loans.exception.LoanAlreadyExistsException;
-import com.easybytes.loans.exception.ResourceNotFoundException;
-import com.easybytes.loans.mapper.LoansMapper;
-import com.easybytes.loans.repository.LoansRepository;
-import com.easybytes.loans.dto.LoanScheduleDto;
-import com.easybytes.loans.service.ILoansService;
-import com.easybytes.loans.service.schedule.AmortizationCalculator;
-import com.easybytes.loans.service.schedule.AmortizationSchedule;
+import dev.silue.banking.loans.constants.LoansConstants;
+import dev.silue.banking.loans.dto.LoansDto;
+import dev.silue.banking.loans.entity.Loans;
+import dev.silue.banking.loans.exception.LoanAlreadyExistsException;
+import dev.silue.banking.loans.exception.ResourceNotFoundException;
+import dev.silue.banking.loans.mapper.LoansMapper;
+import dev.silue.banking.loans.repository.LoansRepository;
+import dev.silue.banking.loans.dto.LoanScheduleDto;
+import dev.silue.banking.loans.service.ILoansService;
+import dev.silue.banking.loans.service.schedule.AmortizationCalculator;
+import dev.silue.banking.loans.service.schedule.AmortizationSchedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

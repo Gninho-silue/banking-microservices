@@ -1,6 +1,6 @@
-package com.easybytes.accounts.repository;
+package dev.silue.banking.accounts.repository;
 
-import com.easybytes.accounts.entity.Customer;
+import dev.silue.banking.accounts.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

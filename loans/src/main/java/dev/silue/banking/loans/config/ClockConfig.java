@@ -1,4 +1,4 @@
-package com.easybytes.loans.config;
+package dev.silue.banking.loans.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

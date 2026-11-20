@@ -68,9 +68,7 @@ info:
     version: "1.0.0"
 logging:
   level:
-    com:
-      easybytes:
-        loans: DEBUG
+    dev.silue.banking.loans: DEBUG
   pattern:
     level: "%5p[${spring.application.name},%X{trace_id},%X{span_id}]"
 

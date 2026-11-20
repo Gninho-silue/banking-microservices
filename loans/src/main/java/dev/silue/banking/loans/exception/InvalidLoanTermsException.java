@@ -1,4 +1,4 @@
-package com.easybytes.loans.exception;
+package dev.silue.banking.loans.exception;
 
 /**
  * Loan terms that cannot be amortized (non-positive principal or term, negative rate). Mapped to HTTP 400.

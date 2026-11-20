@@ -1,6 +1,6 @@
-package com.easybytes.loans.repository;
+package dev.silue.banking.loans.repository;
 
-import com.easybytes.loans.entity.Loans;
+import dev.silue.banking.loans.entity.Loans;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.easybytes.accounts.dto;
+package dev.silue.banking.accounts.dto;
 
 import lombok.Getter;
 import lombok.Setter;

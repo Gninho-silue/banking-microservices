@@ -1,6 +1,6 @@
-package com.easybytes.accounts.repository;
+package dev.silue.banking.accounts.repository;
 
-import com.easybytes.accounts.entity.OutboxEvent;
+import dev.silue.banking.accounts.entity.OutboxEvent;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Limit;

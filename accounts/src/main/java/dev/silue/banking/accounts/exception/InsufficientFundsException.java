@@ -1,4 +1,4 @@
-package com.easybytes.accounts.exception;
+package dev.silue.banking.accounts.exception;
 
 /**
  * Raised when a debit would make an account balance negative. Mapped to HTTP 422.

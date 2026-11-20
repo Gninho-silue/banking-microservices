@@ -1,9 +1,9 @@
-package com.easybytes.cards.controller;
+package dev.silue.banking.cards.controller;
 
-import com.easybytes.cards.dto.CardsDto;
-import com.easybytes.cards.exception.CardAlreadyExistsException;
-import com.easybytes.cards.exception.ResourceNotFoundException;
-import com.easybytes.cards.service.ICardsService;
+import dev.silue.banking.cards.dto.CardsDto;
+import dev.silue.banking.cards.exception.CardAlreadyExistsException;
+import dev.silue.banking.cards.exception.ResourceNotFoundException;
+import dev.silue.banking.cards.service.ICardsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

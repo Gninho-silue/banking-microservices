@@ -1,4 +1,4 @@
-package com.easybytes.cards.entity;
+package dev.silue.banking.cards.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

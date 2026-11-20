@@ -1,13 +1,13 @@
-package com.easybytes.accounts.controller;
+package dev.silue.banking.accounts.controller;
 
-import com.easybytes.accounts.constants.AccountsConstants;
-import com.easybytes.accounts.dto.AccountBalanceDto;
-import com.easybytes.accounts.dto.ContactInfoDto;
-import com.easybytes.accounts.dto.DepositRequestDto;
-import com.easybytes.accounts.dto.CustomerDto;
-import com.easybytes.accounts.dto.ResponseDto;
-import com.easybytes.accounts.dto.ErrorResponseDto;
-import com.easybytes.accounts.service.IAccountsService;
+import dev.silue.banking.accounts.constants.AccountsConstants;
+import dev.silue.banking.accounts.dto.AccountBalanceDto;
+import dev.silue.banking.accounts.dto.ContactInfoDto;
+import dev.silue.banking.accounts.dto.DepositRequestDto;
+import dev.silue.banking.accounts.dto.CustomerDto;
+import dev.silue.banking.accounts.dto.ResponseDto;
+import dev.silue.banking.accounts.dto.ErrorResponseDto;
+import dev.silue.banking.accounts.service.IAccountsService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;

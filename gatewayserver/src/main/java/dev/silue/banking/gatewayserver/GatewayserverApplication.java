@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver;
+package dev.silue.banking.gatewayserver;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;

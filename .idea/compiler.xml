@@ -31,7 +31,7 @@
       <module name="accounts" options="" />
       <module name="cards" options="" />
       <module name="configserver" options="" />
-      <module name="easy-bom" options="" />
+      <module name="banking-bom" options="" />
       <module name="eurekaserver" options="" />
       <module name="gatewayserver" options="" />
       <module name="loans" options="" />

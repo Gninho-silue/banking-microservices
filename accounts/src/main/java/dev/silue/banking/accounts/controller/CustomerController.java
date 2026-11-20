@@ -1,8 +1,8 @@
-package com.easybytes.accounts.controller;
-import com.easybytes.accounts.dto.ErrorResponseDto;
+package dev.silue.banking.accounts.controller;
+import dev.silue.banking.accounts.dto.ErrorResponseDto;
 
-import com.easybytes.accounts.dto.CustomerDetailsDto;
-import com.easybytes.accounts.service.ICustomerService;
+import dev.silue.banking.accounts.dto.CustomerDetailsDto;
+import dev.silue.banking.accounts.service.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

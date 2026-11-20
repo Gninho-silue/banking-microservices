@@ -1,4 +1,4 @@
-package com.easybytes.configserver;
+package dev.silue.banking.configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

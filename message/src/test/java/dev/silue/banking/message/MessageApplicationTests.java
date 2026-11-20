@@ -1,4 +1,4 @@
-package com.easybytes.message;
+package dev.silue.banking.message;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

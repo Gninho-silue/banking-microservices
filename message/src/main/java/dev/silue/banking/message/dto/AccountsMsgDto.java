@@ -1,4 +1,4 @@
-package com.easybytes.message.dto;
+package dev.silue.banking.message.dto;
 
 /**
  *

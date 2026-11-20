@@ -1,4 +1,4 @@
-package com.easybytes.accounts.exception;
+package dev.silue.banking.accounts.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String ressourceName, String fieldName, String fieldValue) {

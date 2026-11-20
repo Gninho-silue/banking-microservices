@@ -34,13 +34,13 @@ jobs:
           java-version: '21'
           cache: maven
           cache-dependency-path: |
-            easy-bom/pom.xml
+            banking-bom/pom.xml
             ${{ matrix.service }}/pom.xml
 
-      # Services inherit from easy-bom (relativePath). Install the parent POM only (-N):
-      # no service depends on the easy-bom/common module.
-      - name: Install easy-bom parent POM
-        working-directory: easy-bom
+      # Services inherit from banking-bom (relativePath). Install the parent POM only (-N):
+      # no service depends on the banking-bom/common module.
+      - name: Install banking-bom parent POM
+        working-directory: banking-bom
         run: ./mvnw -B -N install
 
       # Testcontainers (MySQL, Kafka) uses the Docker engine available on ubuntu-latest.

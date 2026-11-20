@@ -1,7 +1,7 @@
-package com.easybytes.accounts.service.client;
+package dev.silue.banking.accounts.service.client;
 
-import com.easybytes.accounts.dto.CardsDto;
-import com.easybytes.accounts.dto.LoansDto;
+import dev.silue.banking.accounts.dto.CardsDto;
+import dev.silue.banking.accounts.dto.LoansDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 

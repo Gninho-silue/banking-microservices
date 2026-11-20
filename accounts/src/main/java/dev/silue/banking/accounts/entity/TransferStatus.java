@@ -1,4 +1,4 @@
-package com.easybytes.accounts.entity;
+package dev.silue.banking.accounts.entity;
 
 /**
  * Only successful transfers are recorded: a rejected request (validation, insufficient funds)

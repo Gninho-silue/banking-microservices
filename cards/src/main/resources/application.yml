@@ -67,9 +67,7 @@ info:
 
 logging:
   level:
-    com:
-      easybytes:
-        cards: DEBUG
+    dev.silue.banking.cards: DEBUG
   pattern:
     level: "%5p[${spring.application.name},%X{trace_id},%X{span_id}]"
 

@@ -1,4 +1,4 @@
-package com.easybytes.cards.constants;
+package dev.silue.banking.cards.constants;
 
 public final class CardsConstants {
 

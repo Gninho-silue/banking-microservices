@@ -1,6 +1,6 @@
-package com.easybytes.loans.dto;
+package dev.silue.banking.loans.dto;
 
-import com.easybytes.loans.service.schedule.Installment;
+import dev.silue.banking.loans.service.schedule.Installment;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

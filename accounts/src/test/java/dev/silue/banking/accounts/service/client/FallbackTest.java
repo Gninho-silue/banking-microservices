@@ -1,4 +1,4 @@
-package com.easybytes.accounts.service.client;
+package dev.silue.banking.accounts.service.client;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

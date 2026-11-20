@@ -1,7 +1,7 @@
-package com.easybytes.accounts.entity;
+package dev.silue.banking.accounts.entity;
 
-import com.easybytes.accounts.exception.InsufficientFundsException;
-import com.easybytes.accounts.service.rules.TransferRules;
+import dev.silue.banking.accounts.exception.InsufficientFundsException;
+import dev.silue.banking.accounts.service.rules.TransferRules;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

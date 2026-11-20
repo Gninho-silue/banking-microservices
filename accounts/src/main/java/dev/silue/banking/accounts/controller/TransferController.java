@@ -1,10 +1,10 @@
-package com.easybytes.accounts.controller;
+package dev.silue.banking.accounts.controller;
 
-import com.easybytes.accounts.dto.ErrorResponseDto;
-import com.easybytes.accounts.dto.TransferDto;
-import com.easybytes.accounts.dto.TransferRequestDto;
-import com.easybytes.accounts.service.ITransferService;
-import com.easybytes.accounts.service.TransferResult;
+import dev.silue.banking.accounts.dto.ErrorResponseDto;
+import dev.silue.banking.accounts.dto.TransferDto;
+import dev.silue.banking.accounts.dto.TransferRequestDto;
+import dev.silue.banking.accounts.service.ITransferService;
+import dev.silue.banking.accounts.service.TransferResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;

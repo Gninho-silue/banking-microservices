@@ -1,4 +1,4 @@
-package com.easybytes.gatewayserver.controller;
+package dev.silue.banking.gatewayserver.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -9,9 +9,9 @@ and a Grafana LGTM observability stack.
 ## Based on
 
 Built on the architecture of the EazyBytes *Master Microservices with Spring Boot, Docker & Kubernetes*
-course. The service layout (accounts, loans, cards, message, config server, Eureka, gateway), the
-`com.easybytes.*` packages and the `easy-bom` module come from the course; the work listed below is my own
-addition on top of it.
+course. The service layout (accounts, loans, cards, message, config server, Eureka, gateway) and the shared
+parent POM come from the course (originally `com.easybytes.*` packages and an `easy-bom` module, since renamed
+to `dev.silue.banking.*` and `banking-bom`); the work listed below is my own addition on top of it.
 
 ## Beyond the course — what I added
 
@@ -23,9 +23,9 @@ addition on top of it.
 | **Transfer notifications** | New `transferNotification` consumer on `transfer-completed`. | `message` |
 | **Loan amortization schedule** | Pure-Java `AmortizationCalculator` (constant payments, `BigDecimal`, `DECIMAL64`, HALF_EVEN, last installment absorbs rounding so the capital ends at exactly `0.00`) and `GET /api/loans/schedule`. Loan amounts migrated from `Integer` to `BigDecimal`; loans now carry a rate, a term and a start date. | `loans` |
 | **Test suite** | **205 tests**: JUnit 5 + Mockito unit tests, `@WebMvcTest` controller tests, `@DataJpaTest` and `@SpringBootTest` integration tests against **MySQL 8.4 and Kafka 4.1 (Testcontainers)**, incl. concurrency tests (20 parallel transfers on one account, 20 parallel replays of one key). Written test-first for the new features. | all |
-| **Coverage** | JaCoCo with a **70 % line-coverage gate on `service/`** (`./mvnw verify` fails below it). Measured: **100 % on `service/`** in accounts, loans and cards; 97.6 % / 98.4 % / 97.4 % overall. | `easy-bom` |
+| **Coverage** | JaCoCo with a **70 % line-coverage gate on `service/`** (`./mvnw verify` fails below it). Measured: **100 % on `service/`** in accounts, loans and cards; 97.6 % / 98.4 % / 97.4 % overall. | `banking-bom` |
 | **CI** | GitHub Actions on every push / PR to `main`: one job per service (7), Temurin 21, Maven cache, `./mvnw -B verify`, JaCoCo reports as artifacts. Build and tests only — no deployment. | `.github/workflows/ci.yml` |
-| **Bugs fixed** | Missing `-parameters` compiler flag (every `@RequestParam` endpoint returned 500 when built with Maven/Jib); springdoc BOM downgrading `spring-cloud-function` (stream binder crash); invalid request parameters returning 500 instead of 400; lost update on account balances. | `easy-bom`, services |
+| **Bugs fixed** | Missing `-parameters` compiler flag (every `@RequestParam` endpoint returned 500 when built with Maven/Jib); springdoc BOM downgrading `spring-cloud-function` (stream binder crash); invalid request parameters returning 500 instead of 400; lost update on account balances. | `banking-bom`, services |
 | **Repository hygiene** | Docker volume data (`.data/`) no longer tracked, tighter `.gitignore`, `mvnw` scripts executable. | root |
 
 ## Architecture
@@ -94,7 +94,7 @@ flowchart LR
 
 ### Build the images
 
-Each service is an independent Maven project inheriting from `easy-bom` (through `relativePath`, no install needed).
+Each service is an independent Maven project inheriting from `banking-bom` (through `relativePath`, no install needed).
 `docker-compose/default/docker-compose.yml` references images tagged `3.2`:
 
 ```bash
@@ -220,7 +220,7 @@ cd accounts            # or loans, cards, message, gatewayserver, configserver, 
 ```
 accounts/ loans/ cards/ message/        business services (Maven projects, own mvnw)
 configserver/ eurekaserver/ gatewayserver/
-easy-bom/                               parent POM: versions, compiler, surefire, JaCoCo
+banking-bom/                            parent POM: versions, compiler, surefire, JaCoCo
 docker-compose/{default,qa,prod}/       full stack incl. observability
 docker-compose/observability/           Loki, Alloy, Tempo, Prometheus, Grafana configuration
 helm/  k8s/                             Kubernetes deployment (not deployed by the CI)

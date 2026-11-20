@@ -1,4 +1,4 @@
-package com.easybytes.accounts.support;
+package dev.silue.banking.accounts.support;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
