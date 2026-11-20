@@ -12,6 +12,9 @@ public class LoansMapper {
         dto.setTotalLoan(loans.getTotalLoan());
         dto.setAmountPaid(loans.getAmountPaid());
         dto.setOutstandingAmount(loans.getOutstandingAmount());
+        dto.setAnnualInterestRate(loans.getAnnualInterestRate());
+        dto.setTermMonths(loans.getTermMonths());
+        dto.setStartDate(loans.getStartDate());
         return dto;
     }
 
@@ -22,6 +25,13 @@ public class LoansMapper {
         entity.setTotalLoan(dto.getTotalLoan());
         entity.setAmountPaid(dto.getAmountPaid());
         entity.setOutstandingAmount(dto.getOutstandingAmount());
+        // terms are optional on update (older clients do not send them); startDate is never changed
+        if (dto.getAnnualInterestRate() != null) {
+            entity.setAnnualInterestRate(dto.getAnnualInterestRate());
+        }
+        if (dto.getTermMonths() != null) {
+            entity.setTermMonths(dto.getTermMonths());
+        }
         return entity;
     }
 }

@@ -1,20 +1,26 @@
 package com.easybytes.loans.service.impl;
 
 import com.easybytes.loans.constants.LoansConstants;
+import com.easybytes.loans.dto.LoanScheduleDto;
 import com.easybytes.loans.dto.LoansDto;
 import com.easybytes.loans.entity.Loans;
 import com.easybytes.loans.exception.LoanAlreadyExistsException;
 import com.easybytes.loans.exception.ResourceNotFoundException;
+import com.easybytes.loans.mapper.LoansMapper;
 import com.easybytes.loans.repository.LoansRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,11 +37,18 @@ class LoansServiceImplTest {
 
     private static final String MOBILE = "0612345678";
 
+    private static final LocalDate TODAY = LocalDate.of(2026, 3, 10);
+
     @Mock
     private LoansRepository loansRepository;
 
-    @InjectMocks
     private LoansServiceImpl service;
+
+    @BeforeEach
+    void setUp() {
+        Clock clock = Clock.fixed(TODAY.atStartOfDay(ZoneOffset.UTC).toInstant(), ZoneOffset.UTC);
+        service = new LoansServiceImpl(loansRepository, clock);
+    }
 
     private static Loans loan(long id, String loanNumber) {
         Loans l = new Loans();
@@ -46,7 +59,41 @@ class LoansServiceImplTest {
         l.setTotalLoan(new BigDecimal("100000.00"));
         l.setAmountPaid(new BigDecimal("0.00"));
         l.setOutstandingAmount(new BigDecimal("100000.00"));
+        l.setAnnualInterestRate(new BigDecimal("0.0500"));
+        l.setTermMonths(12);
+        l.setStartDate(LocalDate.of(2026, 1, 15));
         return l;
+    }
+
+    @Nested
+    class Schedule {
+
+        @Test
+        void computesTheScheduleOfTheCustomersLoan() {
+            when(loansRepository.findByMobileNumber(MOBILE)).thenReturn(Optional.of(loan(1L, "1234567890123456")));
+
+            LoanScheduleDto schedule = service.getSchedule(MOBILE);
+
+            assertThat(schedule.getLoanNumber()).isEqualTo("1234567890123456");
+            assertThat(schedule.getPrincipal()).isEqualTo(new BigDecimal("100000.00"));
+            assertThat(schedule.getAnnualInterestRate()).isEqualTo(new BigDecimal("0.0500"));
+            assertThat(schedule.getTermMonths()).isEqualTo(12);
+            assertThat(schedule.getMonthlyPayment()).isEqualTo(new BigDecimal("8560.75"));
+            assertThat(schedule.getInstallments()).hasSize(12);
+            assertThat(schedule.getInstallments().getFirst().dueDate()).isEqualTo(LocalDate.of(2026, 2, 15));
+            assertThat(schedule.getInstallments().getLast().remaining()).isEqualTo(new BigDecimal("0.00"));
+            assertThat(schedule.getTotalPayment())
+                    .isEqualTo(schedule.getPrincipal().add(schedule.getTotalInterest()));
+        }
+
+        @Test
+        void unknownMobileIsNotFound() {
+            when(loansRepository.findByMobileNumber(MOBILE)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> service.getSchedule(MOBILE))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessage("Loans not found for mobile: " + MOBILE);
+        }
     }
 
     @Nested
@@ -68,6 +115,9 @@ class LoansServiceImplTest {
             assertThat(saved.getAmountPaid()).isZero();
             assertThat(saved.getOutstandingAmount()).isEqualTo(LoansConstants.NEW_LOAN_LIMIT);
             assertThat(saved.getLoanNumber()).matches("\\d{16}");
+            assertThat(saved.getAnnualInterestRate()).isEqualTo(new BigDecimal("0.0500"));
+            assertThat(saved.getTermMonths()).isEqualTo(60);
+            assertThat(saved.getStartDate()).isEqualTo(TODAY);
         }
 
         @Test
@@ -153,6 +203,35 @@ class LoansServiceImplTest {
             assertThat(existing.getAmountPaid()).isEqualTo(new BigDecimal("25000.00"));
             assertThat(existing.getOutstandingAmount()).isEqualTo(new BigDecimal("75000.00"));
             verify(loansRepository).save(existing);
+        }
+
+        @Test
+        void updatesLoanTermsWhenProvided() {
+            Loans existing = loan(1L, "1234567890123456");
+            when(loansRepository.findByLoanNumber("1234567890123456")).thenReturn(Optional.of(existing));
+            LoansDto dto = LoansMapper.toLoansDto(existing, new LoansDto());
+            dto.setAnnualInterestRate(new BigDecimal("0.0325"));
+            dto.setTermMonths(240);
+
+            service.updateLoan(dto);
+
+            assertThat(existing.getAnnualInterestRate()).isEqualTo(new BigDecimal("0.0325"));
+            assertThat(existing.getTermMonths()).isEqualTo(240);
+            assertThat(existing.getStartDate()).isEqualTo(LocalDate.of(2026, 1, 15));
+        }
+
+        @Test
+        void keepsLoanTermsWhenOmitted() {
+            Loans existing = loan(1L, "1234567890123456");
+            when(loansRepository.findByLoanNumber("1234567890123456")).thenReturn(Optional.of(existing));
+            LoansDto dto = LoansMapper.toLoansDto(existing, new LoansDto());
+            dto.setAnnualInterestRate(null);
+            dto.setTermMonths(null);
+
+            service.updateLoan(dto);
+
+            assertThat(existing.getAnnualInterestRate()).isEqualTo(new BigDecimal("0.0500"));
+            assertThat(existing.getTermMonths()).isEqualTo(12);
         }
 
         @Test

@@ -13,6 +13,9 @@ public final class LoansConstants {
     public static final String PERSONAL_LOAN = "PERSONAL";
     public static final String AUTO_LOAN = "AUTO";
     public static final BigDecimal NEW_LOAN_LIMIT = new BigDecimal("100000.00");
+    /** Default terms of a new loan: 5 % nominal annual rate over 60 months, starting on the creation date. */
+    public static final BigDecimal DEFAULT_ANNUAL_INTEREST_RATE = new BigDecimal("0.0500");
+    public static final int DEFAULT_TERM_MONTHS = 60;
 
     public static final String STATUS_201 = "201";
     public static final String MESSAGE_201 = "Loan created successfully";

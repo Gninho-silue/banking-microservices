@@ -3,6 +3,7 @@ package com.easybytes.loans.controller;
 import com.easybytes.loans.constants.LoansConstants;
 import com.easybytes.loans.dto.ContactInfoDto;
 import com.easybytes.loans.dto.ErrorResponseDto;
+import com.easybytes.loans.dto.LoanScheduleDto;
 import com.easybytes.loans.dto.LoansDto;
 import com.easybytes.loans.dto.ResponseDto;
 import com.easybytes.loans.service.ILoansService;
@@ -122,6 +123,25 @@ public class LoansController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(summary = "Get the amortization schedule of a customer's loan",
+            description = "Constant monthly payments M = P·r / (1 − (1+r)^−n) with r = annual rate / 12, "
+                    + "amounts rounded to 2 decimals (HALF_EVEN); the last installment absorbs the rounding "
+                    + "difference so the remaining capital ends at exactly 0.00")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Schedule computed"),
+            @ApiResponse(responseCode = "400", description = "Invalid mobile number or loan terms",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "No loan for this mobile number",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @GetMapping("/loans/schedule")
+    public ResponseEntity<LoanScheduleDto> getSchedule(
+            @RequestParam
+            @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+            String mobileNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(loansService.getSchedule(mobileNumber));
     }
 
     @GetMapping("/contact")

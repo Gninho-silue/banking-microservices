@@ -1,5 +1,6 @@
 package com.easybytes.loans.service;
 
+import com.easybytes.loans.dto.LoanScheduleDto;
 import com.easybytes.loans.dto.LoansDto;
 
 public interface ILoansService {
@@ -34,4 +35,13 @@ public interface ILoansService {
      * @return true if deleted
      */
     boolean deleteLoan(String mobileNumber);
+
+    /**
+     * Computes the constant-payment amortization schedule of the customer's loan
+     * (capital = total loan, from the loan start date).
+     *
+     * @param mobileNumber 10-digit mobile number
+     * @return installments and totals
+     */
+    LoanScheduleDto getSchedule(String mobileNumber);
 }

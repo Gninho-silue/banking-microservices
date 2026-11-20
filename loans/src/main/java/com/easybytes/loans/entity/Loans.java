@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -36,4 +37,14 @@ public class Loans extends BaseEntity {
 
     @Column(name = "outstanding_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal outstandingAmount;
+
+    /** Nominal annual rate as a fraction (0.0500 = 5 %). */
+    @Column(name = "annual_interest_rate", nullable = false, precision = 5, scale = 4)
+    private BigDecimal annualInterestRate;
+
+    @Column(name = "term_months", nullable = false)
+    private Integer termMonths;
+
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,6 +36,9 @@ class LoansRepositoryTest {
         l.setTotalLoan(new BigDecimal("100000.00"));
         l.setAmountPaid(new BigDecimal("0.00"));
         l.setOutstandingAmount(new BigDecimal("100000.00"));
+        l.setAnnualInterestRate(new BigDecimal("0.0500"));
+        l.setTermMonths(60);
+        l.setStartDate(LocalDate.of(2026, 1, 31));
         return loansRepository.saveAndFlush(l);
     }
 
@@ -76,5 +80,18 @@ class LoansRepositoryTest {
         Loans reloaded = loansRepository.findById(loan.getLoanId()).orElseThrow();
         assertThat(reloaded.getAmountPaid()).isEqualTo(new BigDecimal("30000.00"));
         assertThat(reloaded.getOutstandingAmount()).isEqualTo(new BigDecimal("70000.00"));
+    }
+
+    @Test
+    void persistsLoanTermsWithTheirSqlTypes() {
+        Loans loan = saveLoan("0655555555", "5555666677778888");
+        loan.setAnnualInterestRate(new BigDecimal("0.0325"));
+        loan.setTermMonths(240);
+        loansRepository.saveAndFlush(loan);
+
+        Loans reloaded = loansRepository.findById(loan.getLoanId()).orElseThrow();
+        assertThat(reloaded.getAnnualInterestRate()).isEqualTo(new BigDecimal("0.0325"));
+        assertThat(reloaded.getTermMonths()).isEqualTo(240);
+        assertThat(reloaded.getStartDate()).isEqualTo(LocalDate.of(2026, 1, 31));
     }
 }

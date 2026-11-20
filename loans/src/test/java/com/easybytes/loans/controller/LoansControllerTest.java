@@ -1,9 +1,12 @@
 package com.easybytes.loans.controller;
 
+import com.easybytes.loans.dto.LoanScheduleDto;
 import com.easybytes.loans.dto.LoansDto;
+import com.easybytes.loans.exception.InvalidLoanTermsException;
 import com.easybytes.loans.exception.LoanAlreadyExistsException;
 import com.easybytes.loans.exception.ResourceNotFoundException;
 import com.easybytes.loans.service.ILoansService;
+import com.easybytes.loans.service.schedule.Installment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -12,6 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -187,6 +192,73 @@ class LoansControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.errorCode").value("500 INTERNAL_SERVER_ERROR"))
                 .andExpect(jsonPath("$.errorMessage").value("boom"));
+    }
+
+    @Test
+    void scheduleReturnsInstallmentsAndTotals() throws Exception {
+        LoanScheduleDto dto = new LoanScheduleDto();
+        dto.setLoanNumber("1234567890123456");
+        dto.setPrincipal(new BigDecimal("100000.00"));
+        dto.setAnnualInterestRate(new BigDecimal("0.0500"));
+        dto.setTermMonths(12);
+        dto.setMonthlyPayment(new BigDecimal("8560.75"));
+        dto.setTotalInterest(new BigDecimal("2729.01"));
+        dto.setTotalPayment(new BigDecimal("102729.01"));
+        dto.setInstallments(List.of(new Installment(1, LocalDate.of(2026, 2, 15), new BigDecimal("8560.75"),
+                new BigDecimal("416.67"), new BigDecimal("8144.08"), new BigDecimal("91855.92"))));
+        when(loansService.getSchedule(MOBILE)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/loans/schedule").param("mobileNumber", MOBILE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.monthlyPayment").value(8560.75))
+                .andExpect(jsonPath("$.totalPayment").value(102729.01))
+                .andExpect(jsonPath("$.installments[0].n").value(1))
+                .andExpect(jsonPath("$.installments[0].dueDate").value("2026-02-15"))
+                .andExpect(jsonPath("$.installments[0].interest").value(416.67))
+                .andExpect(jsonPath("$.installments[0].principal").value(8144.08))
+                .andExpect(jsonPath("$.installments[0].remaining").value(91855.92));
+    }
+
+    @Test
+    void scheduleOfUnknownLoanIs404() throws Exception {
+        when(loansService.getSchedule(MOBILE))
+                .thenThrow(new ResourceNotFoundException("Loans not found for mobile: " + MOBILE));
+
+        mockMvc.perform(get("/api/loans/schedule").param("mobileNumber", MOBILE))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void scheduleWithMalformedMobileIs400() throws Exception {
+        mockMvc.perform(get("/api/loans/schedule").param("mobileNumber", "12"))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(loansService);
+    }
+
+    @Test
+    void scheduleWithInvalidStoredTermsIs400() throws Exception {
+        when(loansService.getSchedule(MOBILE)).thenThrow(new InvalidLoanTermsException("Term must be at least 1 month"));
+
+        mockMvc.perform(get("/api/loans/schedule").param("mobileNumber", MOBILE))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").value("Term must be at least 1 month"));
+    }
+
+    @Test
+    void updateWithNegativeRateOrZeroTermIs400() throws Exception {
+        String invalid = """
+                {"mobileNumber":"0612345678","loanNumber":"1234567890123456","loanType":"HOME",
+                 "totalLoan":100000,"amountPaid":0,"outstandingAmount":100000,
+                 "annualInterestRate":-0.01,"termMonths":0}
+                """;
+
+        mockMvc.perform(put("/api/update").contentType(MediaType.APPLICATION_JSON).content(invalid))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.annualInterestRate").value("Annual interest rate must be >= 0"))
+                .andExpect(jsonPath("$.termMonths").value("Term must be at least 1 month"));
+
+        verifyNoInteractions(loansService);
     }
 
     @Test

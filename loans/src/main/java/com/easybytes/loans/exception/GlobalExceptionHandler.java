@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({LoanAlreadyExistsException.class, ResourceNotFoundException.class})
+    @ExceptionHandler({LoanAlreadyExistsException.class, ResourceNotFoundException.class, InvalidLoanTermsException.class})
     public ResponseEntity<ErrorResponseDto> handleBusinessExceptions(RuntimeException ex, WebRequest request) {
         HttpStatus status = ex instanceof ResourceNotFoundException ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
