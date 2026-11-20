@@ -40,6 +40,8 @@
         <micrometer.version>1.16.0</micrometer.version>
         <jib.version>3.5.1</jib.version>
         <image.tag>4.1</image.tag>
+        <jacoco.version>0.8.13</jacoco.version>
+        <jacoco.service.line.minimum>0.70</jacoco.service.line.minimum>
     </properties>
     <modules>
         <module>common</module>
@@ -105,6 +107,38 @@
                 <configuration>
                     <parameters>true</parameters>
                 </configuration>
+            </plugin>
+            <!-- Tests run without Config Server / Eureka (see each service's application-test.yml) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <spring.cloud.config.enabled>false</spring.cloud.config.enabled>
+                        <eureka.client.enabled>false</eureka.client.enabled>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <!-- Code coverage: agent attached to surefire, HTML/XML report generated on `verify` -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
