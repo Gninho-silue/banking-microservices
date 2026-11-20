@@ -89,12 +89,12 @@ Dans **loans** :
 - [x] Commit `ci: build and test all services on push` → push, **vérifier que le run GitHub est vert** (`gh run watch` ou onglet Actions) ; corriger sinon.
 
 ## Étape 5 — README
-- [ ] Section **"Based on"** en tête : « Built on the architecture of the EazyBytes *Master Microservices with Spring Boot, Docker & Kubernetes* course. »
-- [ ] Section **"Beyond the course — what I added"** : virements idempotents + outbox Kafka, échéancier de prêt, suite de tests (unit / WebMvc / Testcontainers, chiffres de couverture réels), CI, hygiène du dépôt.
-- [ ] Diagramme d'architecture en **Mermaid** (gateway, services, Kafka, Keycloak, MySQL, observabilité).
-- [ ] Exemples `curl` pour transfert et échéancier ; comment lancer les tests.
-- [ ] Corriger le README : DB = MySQL (pas de mention PostgreSQL), retirer tout ce qui n'existe pas dans le code.
-- [ ] Commit `docs: ...` → push.
+- [x] Section **"Based on"** en tête : « Built on the architecture of the EazyBytes *Master Microservices with Spring Boot, Docker & Kubernetes* course. »
+- [x] Section **"Beyond the course — what I added"** : virements idempotents + outbox Kafka, échéancier de prêt, suite de tests (unit / WebMvc / Testcontainers, chiffres de couverture réels), CI, hygiène du dépôt.
+- [x] Diagramme d'architecture en **Mermaid** (gateway, services, Kafka, Keycloak, MySQL, observabilité).
+- [x] Exemples `curl` pour transfert et échéancier ; comment lancer les tests.
+- [x] Corriger le README : DB = MySQL (pas de mention PostgreSQL), retirer tout ce qui n'existe pas dans le code.
+- [x] Commit `docs: ...` → push.
 
 ## Étape 6 — Renommage (en dernier, seulement si tout est vert)
 - [ ] Packages `com.easybytes.*` → `dev.silue.banking.*` ; module `easy-bom` → `banking-bom` ; `groupId` en conséquence.
