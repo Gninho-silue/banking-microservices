@@ -1,0 +1,65 @@
+name: CI
+
+# Build + tests only (no deployment).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [accounts, loans, cards, message, gatewayserver, configserver, eurekaserver]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin) with Maven cache
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: |
+            easy-bom/pom.xml
+            ${{ matrix.service }}/pom.xml
+
+      # Services inherit from easy-bom (relativePath). Install the parent POM only (-N):
+      # no service depends on the easy-bom/common module.
+      - name: Install easy-bom parent POM
+        working-directory: easy-bom
+        run: ./mvnw -B -N install
+
+      # Testcontainers (MySQL, Kafka) uses the Docker engine available on ubuntu-latest.
+      - name: Build and test
+        working-directory: ${{ matrix.service }}
+        run: ./mvnw -B verify
+
+      - name: Upload JaCoCo report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-${{ matrix.service }}
+          path: ${{ matrix.service }}/target/site/jacoco/
+          if-no-files-found: ignore
+
+      - name: Upload test reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-${{ matrix.service }}
+          path: ${{ matrix.service }}/target/surefire-reports/
+          if-no-files-found: ignore

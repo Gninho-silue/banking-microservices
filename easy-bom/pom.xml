@@ -108,14 +108,13 @@
                     <parameters>true</parameters>
                 </configuration>
             </plugin>
-            <!-- Tests run without Config Server / Eureka (see each service's application-test.yml) -->
+            <!-- Tests run without Config Server: its import is resolved before profile files (Eureka is disabled in each application-test.yml) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
                         <spring.cloud.config.enabled>false</spring.cloud.config.enabled>
-                        <eureka.client.enabled>false</eureka.client.enabled>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

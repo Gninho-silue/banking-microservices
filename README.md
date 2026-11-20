@@ -1,5 +1,7 @@
 # 🏦 Banking Microservices Application
 
+[![CI](https://github.com/Gninho-silue/banking-microservices/actions/workflows/ci.yml/badge.svg)](https://github.com/Gninho-silue/banking-microservices/actions/workflows/ci.yml)
+
 A modern, cloud-native banking application built with Spring Boot microservices, demonstrating a robust architecture for scalable financial systems. This project implements core banking functionalities such as Accounts, Loans, and Cards management, orchestrated through a distributed system.
 
 ## 🚀 Key Features
