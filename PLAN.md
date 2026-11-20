@@ -97,11 +97,11 @@ Dans **loans** :
 - [x] Commit `docs: ...` → push.
 
 ## Étape 6 — Renommage (en dernier, seulement si tout est vert)
-- [ ] Packages `com.easybytes.*` → `dev.silue.banking.*` ; module `easy-bom` → `banking-bom` ; `groupId` en conséquence.
-- [ ] `git grep -n -i "easybytes\|easy-bom"` dans Java, POM, YAML, Helm, k8s, Dockerfile, noms d'images Jib — tout mettre à jour de façon cohérente.
-- [ ] La mention du cours reste dans le README (section "Based on").
-- [ ] Toute la CI verte après renommage.
-- [ ] Commit `refactor: rename packages and BOM to project namespace` → push.
+- [x] Packages `com.easybytes.*` → `dev.silue.banking.*` ; module `easy-bom` → `banking-bom` ; `groupId` en conséquence.
+- [x] `git grep -n -i "easybytes\|easy-bom"` dans Java, POM, YAML, Helm, k8s, Dockerfile, noms d'images Jib — tout mettre à jour de façon cohérente.
+- [x] La mention du cours reste dans le README (section "Based on").
+- [x] Toute la CI verte après renommage.
+- [x] Commit `refactor: rename packages and BOM to project namespace` → push.
 
 ---
 
