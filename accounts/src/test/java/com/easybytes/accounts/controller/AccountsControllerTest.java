@@ -1,11 +1,14 @@
 package com.easybytes.accounts.controller;
 
+import com.easybytes.accounts.dto.AccountBalanceDto;
 import com.easybytes.accounts.dto.AccountsDto;
 import com.easybytes.accounts.dto.CustomerDto;
 import com.easybytes.accounts.exception.CustomerAlreadyExistsException;
 import com.easybytes.accounts.exception.ResourceNotFoundException;
 import com.easybytes.accounts.service.IAccountsService;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -15,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -181,6 +185,38 @@ class AccountsControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.errorCode").value("500 INTERNAL_SERVER_ERROR"))
                 .andExpect(jsonPath("$.errorMessage").value("boom"));
+    }
+
+    @Test
+    void depositReturnsNewBalance() throws Exception {
+        when(accountsService.deposit(eq(1_000_000_001L), any()))
+                .thenReturn(new AccountBalanceDto(1_000_000_001L, new BigDecimal("500.00")));
+
+        mockMvc.perform(post("/api/accounts/1000000001/deposits")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"amount\":500}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accountNumber").value(1_000_000_001L))
+                .andExpect(jsonPath("$.balance").value(500.00));
+    }
+
+    @Test
+    void depositWithNonPositiveAmountIs400() throws Exception {
+        mockMvc.perform(post("/api/accounts/1000000001/deposits")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"amount\":-5}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.amount").value("Amount must be greater than 0"));
+
+        verifyNoInteractions(accountsService);
+    }
+
+    @Test
+    void depositOnUnknownAccountIs404() throws Exception {
+        when(accountsService.deposit(eq(1_000_000_001L), any()))
+                .thenThrow(new ResourceNotFoundException("Account", "accountNumber", "1000000001"));
+
+        mockMvc.perform(post("/api/accounts/1000000001/deposits")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"amount\":5}"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

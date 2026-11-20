@@ -1,6 +1,9 @@
 package com.easybytes.accounts.service;
 
+import com.easybytes.accounts.dto.AccountBalanceDto;
 import com.easybytes.accounts.dto.CustomerDto;
+
+import java.math.BigDecimal;
 
 public interface IAccountsService {
 
@@ -48,4 +51,13 @@ public interface IAccountsService {
  * @return true if the communication status was successfully updated, false otherwise
  */
     boolean updateCommunicationStatus(Long accountNumber);
+
+    /**
+     * Credits an account (row-locked for the duration of the transaction).
+     *
+     * @param accountNumber the account to credit
+     * @param amount        strictly positive, at most 2 decimals
+     * @return the account number and its new balance
+     */
+    AccountBalanceDto deposit(Long accountNumber, BigDecimal amount);
 }

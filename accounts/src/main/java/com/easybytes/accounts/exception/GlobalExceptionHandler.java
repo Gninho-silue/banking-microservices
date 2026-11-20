@@ -64,6 +64,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(InvalidTransferException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidTransfer(InvalidTransferException ex, WebRequest request) {
+        return error(request, HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ErrorResponseDto> handleInsufficientFunds(InsufficientFundsException ex, WebRequest request) {
+        return error(request, HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
+    }
+
+    @ExceptionHandler(IdempotencyKeyConflictException.class)
+    public ResponseEntity<ErrorResponseDto> handleIdempotencyConflict(IdempotencyKeyConflictException ex,
+                                                                      WebRequest request) {
+        return error(request, HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    private static ResponseEntity<ErrorResponseDto> error(WebRequest request, HttpStatus status, String message) {
+        return new ResponseEntity<>(
+                new ErrorResponseDto(request.getDescription(false), status, message, LocalDateTime.now()), status);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleRessourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(

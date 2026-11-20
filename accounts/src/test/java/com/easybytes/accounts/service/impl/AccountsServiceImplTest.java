@@ -1,12 +1,14 @@
 package com.easybytes.accounts.service.impl;
 
 import com.easybytes.accounts.constants.AccountsConstants;
+import com.easybytes.accounts.dto.AccountBalanceDto;
 import com.easybytes.accounts.dto.AccountsDto;
 import com.easybytes.accounts.dto.AccountsMsgDto;
 import com.easybytes.accounts.dto.CustomerDto;
 import com.easybytes.accounts.entity.Accounts;
 import com.easybytes.accounts.entity.Customer;
 import com.easybytes.accounts.exception.CustomerAlreadyExistsException;
+import com.easybytes.accounts.exception.InvalidTransferException;
 import com.easybytes.accounts.exception.ResourceNotFoundException;
 import com.easybytes.accounts.repository.AccountsRepository;
 import com.easybytes.accounts.repository.CustomerRepository;
@@ -19,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cloud.stream.function.StreamBridge;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -277,6 +280,39 @@ class AccountsServiceImplTest {
 
             assertThatThrownBy(() -> service.updateCommunicationStatus(5L))
                     .isInstanceOf(ResourceNotFoundException.class);
+        }
+    }
+
+    @Nested
+    class Deposit {
+
+        @Test
+        void creditsTheLockedAccountAndReturnsTheNewBalance() {
+            Accounts existing = account(7L, 1_234_567_890L);
+            existing.setBalance(new BigDecimal("10.00"));
+            when(accountsRepository.findByIdForUpdate(1_234_567_890L)).thenReturn(Optional.of(existing));
+
+            AccountBalanceDto result = service.deposit(1_234_567_890L, new BigDecimal("5.5"));
+
+            assertThat(result.getAccountNumber()).isEqualTo(1_234_567_890L);
+            assertThat(result.getBalance()).isEqualTo(new BigDecimal("15.50"));
+            assertThat(existing.getBalance()).isEqualTo(new BigDecimal("15.50"));
+        }
+
+        @Test
+        void rejectsNonPositiveAmountWithoutLocking() {
+            assertThatThrownBy(() -> service.deposit(1_234_567_890L, new BigDecimal("0")))
+                    .isInstanceOf(InvalidTransferException.class);
+            verifyNoInteractions(accountsRepository);
+        }
+
+        @Test
+        void unknownAccountIsNotFound() {
+            when(accountsRepository.findByIdForUpdate(5L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> service.deposit(5L, BigDecimal.ONE))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessage("Account not found with the given input data accountNumber: 5");
         }
     }
 }

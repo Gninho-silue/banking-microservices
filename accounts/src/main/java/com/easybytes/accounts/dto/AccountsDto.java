@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Schema(name = "Account", description = "Schema to hold Account information")
 public class AccountsDto {
@@ -36,4 +38,11 @@ public class AccountsDto {
 
     )
     private String branchAddress;
+
+    @Schema(
+            description = "Current balance (read-only: changed only by deposits and transfers)",
+            example = "1500.00",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private BigDecimal balance;
 }

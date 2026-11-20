@@ -1,7 +1,9 @@
 package com.easybytes.accounts.controller;
 
 import com.easybytes.accounts.constants.AccountsConstants;
+import com.easybytes.accounts.dto.AccountBalanceDto;
 import com.easybytes.accounts.dto.ContactInfoDto;
+import com.easybytes.accounts.dto.DepositRequestDto;
 import com.easybytes.accounts.dto.CustomerDto;
 import com.easybytes.accounts.dto.ResponseDto;
 import com.easybytes.accounts.dto.ErrorResponseDto;
@@ -124,6 +126,21 @@ public class AccountsController {
                     new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE)
             );
         }
+    }
+
+    @Operation(summary = "Deposit money on an account",
+            description = "Credits the account with a strictly positive amount (at most 2 decimals)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Deposit done, new balance returned"),
+            @ApiResponse(responseCode = "400", description = "Invalid amount",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Unknown account",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PostMapping(value = "/accounts/{accountNumber}/deposits", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountBalanceDto> deposit(@PathVariable Long accountNumber,
+                                                     @RequestBody @Valid DepositRequestDto request) {
+        return ResponseEntity.ok(iAccountsService.deposit(accountNumber, request.getAmount()));
     }
 
     @Retry(name = "contactInfoRetry", fallbackMethod = "fallbackContactInfo")

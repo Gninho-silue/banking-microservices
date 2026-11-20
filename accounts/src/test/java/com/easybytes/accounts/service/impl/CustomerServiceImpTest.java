@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +47,7 @@ class CustomerServiceImpTest {
 
     private void givenExistingCustomerWithAccount() {
         Customer customer = new Customer(7L, "Jane Doe", "jane@example.com", MOBILE);
-        Accounts account = new Accounts(7L, 1_234_567_890L, "Savings", "123 Main Street, New York", null);
+        Accounts account = new Accounts(7L, 1_234_567_890L, "Savings", "123 Main Street, New York", null, new BigDecimal("0.00"));
         when(customerRepository.findByMobileNumber(MOBILE)).thenReturn(Optional.of(customer));
         when(accountsRepository.findByCustomerId(7L)).thenReturn(Optional.of(account));
     }

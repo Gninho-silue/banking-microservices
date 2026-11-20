@@ -13,12 +13,16 @@ import com.easybytes.accounts.mapper.AccountsMapper;
 import com.easybytes.accounts.repository.AccountsRepository;
 import com.easybytes.accounts.repository.CustomerRepository;
 import com.easybytes.accounts.service.IAccountsService;
+import com.easybytes.accounts.service.rules.TransferRules;
+import com.easybytes.accounts.dto.AccountBalanceDto;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Random;
 
@@ -153,6 +157,17 @@ public class AccountsServiceImpl implements IAccountsService {
      * @param customer the customer entity for whom the account is being created
      * @return the newly created account instance associated with the customer
      */
+    @Override
+    @Transactional
+    public AccountBalanceDto deposit(Long accountNumber, BigDecimal amount) {
+        BigDecimal money = TransferRules.validateAmount(amount);
+        Accounts account = accountsRepository.findByIdForUpdate(accountNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "accountNumber", String.valueOf(accountNumber)));
+        account.credit(money);
+        logger.info("Deposit of {} on account {}", money, accountNumber);
+        return new AccountBalanceDto(accountNumber, account.getBalance());
+    }
+
     private Accounts createNewAccount(Customer customer) {
         Accounts newAccount = new Accounts();
         newAccount.setCustomerId(customer.getCustomerId());
