@@ -81,12 +81,12 @@ Dans **loans** :
 - [x] Commits (en TDD, tests inclus) : `refactor(loans): use BigDecimal for monetary amounts`, `feat(loans): amortization schedule` → push.
 
 ## Étape 4 — CI GitHub Actions (build + tests, pas de déploiement)
-- [ ] `.github/workflows/ci.yml` : déclenché sur `push` et `pull_request` vers `main`.
-- [ ] Job matrix sur `[accounts, loans, cards, message, gatewayserver, configserver, eurekaserver]` : `actions/setup-java@v4` (Temurin 21, cache Maven) → installer `easy-bom` d'abord (`./mvnw -B install` dans le BOM ou `-pl`), puis `./mvnw -B verify`.
-- [ ] Testcontainers fonctionne nativement sur `ubuntu-latest` (Docker présent).
-- [ ] Upload des rapports JaCoCo en artefact.
-- [ ] Badge CI en haut du README.
-- [ ] Commit `ci: build and test all services on push` → push, **vérifier que le run GitHub est vert** (`gh run watch` ou onglet Actions) ; corriger sinon.
+- [x] `.github/workflows/ci.yml` : déclenché sur `push` et `pull_request` vers `main`.
+- [x] Job matrix sur `[accounts, loans, cards, message, gatewayserver, configserver, eurekaserver]` : `actions/setup-java@v4` (Temurin 21, cache Maven) → installer `easy-bom` d'abord (`./mvnw -B install` dans le BOM ou `-pl`), puis `./mvnw -B verify`.
+- [x] Testcontainers fonctionne nativement sur `ubuntu-latest` (Docker présent).
+- [x] Upload des rapports JaCoCo en artefact.
+- [x] Badge CI en haut du README.
+- [x] Commit `ci: build and test all services on push` → push, **vérifier que le run GitHub est vert** (`gh run watch` ou onglet Actions) ; corriger sinon.
 
 ## Étape 5 — README
 - [ ] Section **"Based on"** en tête : « Built on the architecture of the EazyBytes *Master Microservices with Spring Boot, Docker & Kubernetes* course. »
