@@ -58,16 +58,16 @@ Pour **accounts, loans, cards** :
 
 ## Étape 2 — Virements entre comptes (feature principale)
 Dans **accounts** :
-- [ ] Ajouter `balance DECIMAL(19,2) NOT NULL DEFAULT 0` à `accounts` (`schema.sql` + entité `Accounts`, `BigDecimal`).
-- [ ] Nouvelle table/entité `transfers` : id, `from_account`, `to_account`, `amount`, `status`, `idempotency_key` (UNIQUE), `created_at`.
-- [ ] Endpoint `POST /api/transfers` (header obligatoire `Idempotency-Key`) + `GET /api/transfers/{id}` + `GET /api/accounts/{accountNumber}/transfers`.
-- [ ] Règles : montant > 0, comptes différents et existants, solde suffisant (`InsufficientFundsException` → 422), même `Idempotency-Key` rejouée ⇒ **même réponse, aucun double débit**.
-- [ ] Concurrence : `@Transactional` + verrou pessimiste (`@Lock(PESSIMISTIC_WRITE)`), **verrouiller les deux comptes dans l'ordre croissant des numéros** pour éviter les deadlocks.
-- [ ] **Transactional Outbox** : table `outbox_events` (id, aggregate_id, type, payload JSON, created_at, published_at). L'événement `TransferCompleted` est écrit **dans la même transaction** que le virement ; un `@Scheduled` publisher l'envoie à Kafka via `StreamBridge` puis marque `published_at`.
-- [ ] **message** : nouveau consumer `transferNotification` qui log une notification (comme `email`/`sms` existants). Mettre à jour la config des bindings.
-- [ ] Tests : unitaires (règles métier), idempotence, **test de concurrence** (ex. 20 virements parallèles sur le même compte → solde final correct, jamais négatif), Testcontainers MySQL + **Testcontainers Kafka** pour vérifier que l'événement outbox est publié.
-- [ ] Documenter les endpoints (annotations OpenAPI existantes).
-- [ ] Commits (en TDD, un par feature terminée, tests inclus) : `feat(accounts): idempotent transfers between accounts` (solde + virements + idempotence + concurrence), `feat(accounts): transactional outbox for transfer events`, `feat(message): transfer notification consumer` → push.
+- [x] Ajouter `balance DECIMAL(19,2) NOT NULL DEFAULT 0` à `accounts` (`schema.sql` + entité `Accounts`, `BigDecimal`).
+- [x] Nouvelle table/entité `transfers` : id, `from_account`, `to_account`, `amount`, `status`, `idempotency_key` (UNIQUE), `created_at`.
+- [x] Endpoint `POST /api/transfers` (header obligatoire `Idempotency-Key`) + `GET /api/transfers/{id}` + `GET /api/accounts/{accountNumber}/transfers`.
+- [x] Règles : montant > 0, comptes différents et existants, solde suffisant (`InsufficientFundsException` → 422), même `Idempotency-Key` rejouée ⇒ **même réponse, aucun double débit**.
+- [x] Concurrence : `@Transactional` + verrou pessimiste (`@Lock(PESSIMISTIC_WRITE)`), **verrouiller les deux comptes dans l'ordre croissant des numéros** pour éviter les deadlocks.
+- [x] **Transactional Outbox** : table `outbox_events` (id, aggregate_id, type, payload JSON, created_at, published_at). L'événement `TransferCompleted` est écrit **dans la même transaction** que le virement ; un `@Scheduled` publisher l'envoie à Kafka via `StreamBridge` puis marque `published_at`.
+- [x] **message** : nouveau consumer `transferNotification` qui log une notification (comme `email`/`sms` existants). Mettre à jour la config des bindings.
+- [x] Tests : unitaires (règles métier), idempotence, **test de concurrence** (ex. 20 virements parallèles sur le même compte → solde final correct, jamais négatif), Testcontainers MySQL + **Testcontainers Kafka** pour vérifier que l'événement outbox est publié.
+- [x] Documenter les endpoints (annotations OpenAPI existantes).
+- [x] Commits (en TDD, un par feature terminée, tests inclus) : `feat(accounts): idempotent transfers between accounts` (solde + virements + idempotence + concurrence), `feat(accounts): transactional outbox for transfer events`, `feat(message): transfer notification consumer` → push.
 
 **Terminé quand** : tous les tests verts, et un scénario manuel via docker-compose fonctionne (virement → log dans `message`).
 
