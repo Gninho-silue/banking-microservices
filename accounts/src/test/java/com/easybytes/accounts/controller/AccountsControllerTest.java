@@ -108,12 +108,21 @@ class AccountsControllerTest {
     }
 
     @Test
-    void fetchWithMalformedMobileNumberIsRejected() throws Exception {
-        // Characterization of a known bug: the @Pattern violation surfaces as ConstraintViolationException,
-        // which the catch-all handler maps to 500 instead of 400. Fixed in the following commit.
+    void fetchWithMalformedMobileNumberReturns400() throws Exception {
         mockMvc.perform(get("/api/fetch").param("mobileNumber", "123"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.errorMessage").value(containsString("Mobile Number must 10 digits")));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.apiPath").value("uri=/api/fetch"))
+                .andExpect(jsonPath("$.errorCode").value("400 BAD_REQUEST"))
+                .andExpect(jsonPath("$.errorMessage").value("Mobile Number must 10 digits"));
+
+        verifyNoInteractions(accountsService);
+    }
+
+    @Test
+    void deleteWithMalformedMobileNumberReturns400() throws Exception {
+        mockMvc.perform(delete("/api/delete").param("mobileNumber", "abc"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").value("Mobile Number must 10 digits"));
 
         verifyNoInteractions(accountsService);
     }

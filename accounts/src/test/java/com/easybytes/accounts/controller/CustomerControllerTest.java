@@ -53,6 +53,17 @@ class CustomerControllerTest {
     }
 
     @Test
+    void malformedMobileNumberReturns400() throws Exception {
+        mockMvc.perform(get("/api/fetchCustomerDetails")
+                        .header(CORRELATION_HEADER, "corr-1")
+                        .param("mobileNumber", "12"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").value("Phone Number must 10 digits"));
+
+        verifyNoInteractions(customerService);
+    }
+
+    @Test
     void unknownCustomerReturns404() throws Exception {
         when(customerService.fetchCustomerDetails(MOBILE, "corr-1"))
                 .thenThrow(new ResourceNotFoundException("Customer", "mobileNumber", MOBILE));
