@@ -7,7 +7,8 @@ spring:
 
   cloud:
     function:
-      definition: email|sms
+      # email|sms: account-creation communication; transferNotification: TransferCompleted events
+      definition: email|sms;transferNotification
     stream:
       bindings:
         emailsms-in-0:
@@ -15,8 +16,10 @@ spring:
           group: ${spring.application.name}
         emailsms-out-0:
           destination: communication-sent
+        transferNotification-in-0:
+          destination: transfer-completed
+          group: ${spring.application.name}
       kafka:
         binder:
           brokers:
             - localhost:9092
-
