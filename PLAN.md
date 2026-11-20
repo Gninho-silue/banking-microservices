@@ -45,14 +45,14 @@ Quand tu résumes une étape, liste les comportements dans l'ordre où tu les as
 
 ## Étape 1 — Vraie suite de tests sur le code existant
 Pour **accounts, loans, cards** :
-- [ ] Profil de test `src/test/resources/application-test.yml` : `spring.cloud.config.enabled=false`, `eureka.client.enabled=false`, Kafka/stream désactivé ou mocké, pour que les tests tournent sans infra.
-- [ ] Remplacer le `*ApplicationTests` vide par un vrai test de contexte (ou le supprimer s'il ne peut pas démarrer sans infra, en le justifiant dans le commit).
-- [ ] **Tests unitaires (JUnit 5 + Mockito)** des services : `AccountsServiceImpl`, `CustomerServiceImp`, `LoansServiceImpl`, `CardsServiceImpl` — cas nominaux + erreurs (`ResourceNotFoundException`, `*AlreadyExistsException`).
-- [ ] **Tests de contrôleurs (`@WebMvcTest`)** : codes HTTP, validation (`@Valid`), format des erreurs.
-- [ ] **Tests d'intégration repository avec Testcontainers MySQL** (`@DataJpaTest` + `@Testcontainers`, `MySQLContainer`), qui chargent `schema.sql`.
-- [ ] `CustomerServiceImp` (agrégation via Feign) : test avec Feign clients mockés + test du fallback (`CardsFallback`, `LoansFallback`).
-- [ ] Ajouter JaCoCo (plugin dans `easy-bom` ou par service) ; viser **≥ 70 % de couverture lignes sur `service/`**.
-- [ ] Un commit par service une fois sa suite complète et verte (`test(accounts): ...`, `test(loans): ...`, `test(cards): ...`) → push.
+- [x] Profil de test `src/test/resources/application-test.yml` : `spring.cloud.config.enabled=false`, `eureka.client.enabled=false`, Kafka/stream désactivé ou mocké, pour que les tests tournent sans infra.
+- [x] Remplacer le `*ApplicationTests` vide par un vrai test de contexte (ou le supprimer s'il ne peut pas démarrer sans infra, en le justifiant dans le commit).
+- [x] **Tests unitaires (JUnit 5 + Mockito)** des services : `AccountsServiceImpl`, `CustomerServiceImp`, `LoansServiceImpl`, `CardsServiceImpl` — cas nominaux + erreurs (`ResourceNotFoundException`, `*AlreadyExistsException`).
+- [x] **Tests de contrôleurs (`@WebMvcTest`)** : codes HTTP, validation (`@Valid`), format des erreurs.
+- [x] **Tests d'intégration repository avec Testcontainers MySQL** (`@DataJpaTest` + `@Testcontainers`, `MySQLContainer`), qui chargent `schema.sql`.
+- [x] `CustomerServiceImp` (agrégation via Feign) : test avec Feign clients mockés + test du fallback (`CardsFallback`, `LoansFallback`).
+- [x] Ajouter JaCoCo (plugin dans `easy-bom` ou par service) ; viser **≥ 70 % de couverture lignes sur `service/`**.
+- [x] Un commit par service une fois sa suite complète et verte (`test(accounts): ...`, `test(loans): ...`, `test(cards): ...`) → push.
 
 **Terminé quand** : `./mvnw -B verify` vert dans les 3 services, Docker Desktop requis uniquement pour Testcontainers.
 
