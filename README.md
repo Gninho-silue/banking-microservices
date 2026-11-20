@@ -215,6 +215,11 @@ cd accounts            # or loans, cards, message, gatewayserver, configserver, 
 | message | 4 | — | 86.7 % |
 | gatewayserver, configserver, eurekaserver | 1 each (context) | — | — |
 
+## Known limitations
+
+- Helm charts and Kubernetes manifests don't declare Redis yet: the cards rate limiter only works with docker-compose.
+- The amortization schedule is theoretical: it starts from the original loan amount and ignores repayments already made (`amountPaid`).
+
 ## Project layout
 
 ```
