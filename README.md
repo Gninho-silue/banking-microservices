@@ -69,7 +69,7 @@ flowchart LR
 |---|---|---|
 | `configserver` | 8071 | Centralized configuration (native profile, `classpath:/config`) |
 | `eurekaserver` | 8070 | Service registry |
-| `gatewayserver` | 8072 | Single entry point (`/easybank/{accounts,loans,cards}/**`), JWT resource server, correlation id; circuit breaker (accounts), retry (loans), Redis rate limiter (cards — no Redis container in docker-compose) |
+| `gatewayserver` | 8072 | Single entry point (`/easybank/{accounts,loans,cards}/**`), JWT resource server, correlation id; circuit breaker (accounts), retry (loans), Redis rate limiter (cards, 1 request/s) |
 | `accounts` | 8081 | Customers, accounts, balances, deposits, transfers, outbox; aggregates loans and cards |
 | `loans` | 8083 | Loans and amortization schedules |
 | `cards` | 8082 | Cards |
@@ -110,9 +110,9 @@ cd docker-compose/default
 docker compose up -d
 ```
 
-This starts Kafka, Keycloak, the three MySQL databases, the observability stack (Loki, Alloy, MinIO, Tempo,
+This starts Kafka, Keycloak, Redis (gateway rate limiter), the three MySQL databases, the observability stack (Loki, Alloy, MinIO, Tempo,
 Prometheus, Grafana), the config server, Eureka and all services. Only the gateway (`8072`), Eureka (`8070`),
-the config server (`8071`), Keycloak (`7080`), Grafana (`3000`), Kafka (`9092`) and the databases are published
+the config server (`8071`), Keycloak (`7080`), Grafana (`3000`), Kafka (`9092`), Redis (`6379`) and the databases are published
 on the host: business APIs are reached through the gateway.
 
 > The schema is created by `schema.sql` (`CREATE TABLE IF NOT EXISTS`). The database containers have no

@@ -409,6 +409,24 @@ services:
       service: network-deploy-service
 
   # ======================
+  # REDIS (gateway rate limiter for the cards route)
+  # ======================
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  # ======================
   # GATEWAY SERVER
   # ======================
   gatewayserver:
@@ -420,6 +438,8 @@ services:
     depends_on:
       accounts:
         condition: service_started
+      redis:
+        condition: service_healthy
     #      cards:
     #        condition: service_started
     #      loans:
@@ -434,6 +454,8 @@ services:
       SPRING_APPLICATION_NAME: gatewayserver
       OTEL_SERVICE_NAME: gatewayserver
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
 
     extends:
       file: common-config.yml
