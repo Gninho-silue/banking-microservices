@@ -9,11 +9,9 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableConfigurationProperties(value = {ContactInfoDto.class})
-@EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 @OpenAPIDefinition(info = @Info(title = "Cards microservice REST API Documentation",
         description = "EasyBank Cards REST API Documentation",
         version = "v1",

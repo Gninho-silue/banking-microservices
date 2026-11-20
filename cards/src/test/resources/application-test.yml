@@ -1,0 +1,27 @@
+# Test profile: run without Config Server, Eureka or Kafka.
+# The datasource is provided by Testcontainers (@ServiceConnection) in tests that need one.
+# Note: spring.cloud.config.enabled=false is also passed as a surefire system property (easy-bom),
+# because the configserver import in application.yml is resolved before profile files are read.
+spring:
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none   # schema.sql stays the single source of truth for the schema
+  sql:
+    init:
+      mode: always
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+logging:
+  level:
+    com.easybytes.cards: INFO
