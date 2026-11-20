@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,9 +43,9 @@ class LoansServiceImplTest {
         l.setMobileNumber(MOBILE);
         l.setLoanNumber(loanNumber);
         l.setLoanType(LoansConstants.PERSONAL_LOAN);
-        l.setTotalLoan(100_000);
-        l.setAmountPaid(0);
-        l.setOutstandingAmount(100_000);
+        l.setTotalLoan(new BigDecimal("100000.00"));
+        l.setAmountPaid(new BigDecimal("0.00"));
+        l.setOutstandingAmount(new BigDecimal("100000.00"));
         return l;
     }
 
@@ -116,9 +117,9 @@ class LoansServiceImplTest {
             assertThat(dto.getMobileNumber()).isEqualTo(MOBILE);
             assertThat(dto.getLoanNumber()).isEqualTo("1234567890123456");
             assertThat(dto.getLoanType()).isEqualTo("PERSONAL");
-            assertThat(dto.getTotalLoan()).isEqualTo(100_000);
+            assertThat(dto.getTotalLoan()).isEqualTo(new BigDecimal("100000.00"));
             assertThat(dto.getAmountPaid()).isZero();
-            assertThat(dto.getOutstandingAmount()).isEqualTo(100_000);
+            assertThat(dto.getOutstandingAmount()).isEqualTo(new BigDecimal("100000.00"));
         }
 
         @Test
@@ -142,15 +143,15 @@ class LoansServiceImplTest {
             dto.setMobileNumber(MOBILE);
             dto.setLoanNumber("1234567890123456");
             dto.setLoanType("HOME");
-            dto.setTotalLoan(100_000);
-            dto.setAmountPaid(25_000);
-            dto.setOutstandingAmount(75_000);
+            dto.setTotalLoan(new BigDecimal("100000.00"));
+            dto.setAmountPaid(new BigDecimal("25000.00"));
+            dto.setOutstandingAmount(new BigDecimal("75000.00"));
 
             assertThat(service.updateLoan(dto)).isTrue();
 
             assertThat(existing.getLoanType()).isEqualTo("HOME");
-            assertThat(existing.getAmountPaid()).isEqualTo(25_000);
-            assertThat(existing.getOutstandingAmount()).isEqualTo(75_000);
+            assertThat(existing.getAmountPaid()).isEqualTo(new BigDecimal("25000.00"));
+            assertThat(existing.getOutstandingAmount()).isEqualTo(new BigDecimal("75000.00"));
             verify(loansRepository).save(existing);
         }
 

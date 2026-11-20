@@ -3,6 +3,8 @@ package com.easybytes.loans.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -26,12 +28,12 @@ public class Loans extends BaseEntity {
     @Column(name = "loan_type", nullable = false, length = 100)
     private String loanType;
 
-    @Column(name = "total_loan", nullable = false)
-    private Integer totalLoan;
+    @Column(name = "total_loan", nullable = false, precision = 19, scale = 2)
+    private BigDecimal totalLoan;
 
-    @Column(name = "amount_paid", nullable = false)
-    private Integer amountPaid;
+    @Column(name = "amount_paid", nullable = false, precision = 19, scale = 2)
+    private BigDecimal amountPaid;
 
-    @Column(name = "outstanding_amount", nullable = false)
-    private Integer outstandingAmount;
+    @Column(name = "outstanding_amount", nullable = false, precision = 19, scale = 2)
+    private BigDecimal outstandingAmount;
 }

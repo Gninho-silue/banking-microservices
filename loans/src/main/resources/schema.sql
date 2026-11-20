@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `loans`
 (
     100
 ) NOT NULL,
-    `total_loan` int NOT NULL,
-    `amount_paid` int NOT NULL,
-    `outstanding_amount` int NOT NULL,
+    `total_loan` DECIMAL(19, 2) NOT NULL,
+    `amount_paid` DECIMAL(19, 2) NOT NULL,
+    `outstanding_amount` DECIMAL(19, 2) NOT NULL,
     `created_at` date NOT NULL,
     `created_by` varchar
 (

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,13 +91,13 @@ class LoansControllerTest {
         LoansDto dto = new LoansDto();
         dto.setMobileNumber(MOBILE);
         dto.setLoanNumber("1234567890123456");
-        dto.setTotalLoan(100_000);
+        dto.setTotalLoan(new BigDecimal("100000.00"));
         when(loansService.fetchLoan(MOBILE)).thenReturn(dto);
 
         mockMvc.perform(get("/api/fetch").header(CORRELATION_HEADER, "corr-1").param("mobileNumber", MOBILE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.loanNumber").value("1234567890123456"))
-                .andExpect(jsonPath("$.totalLoan").value(100_000));
+                .andExpect(jsonPath("$.totalLoan").value(100000.00));
     }
 
     @Test

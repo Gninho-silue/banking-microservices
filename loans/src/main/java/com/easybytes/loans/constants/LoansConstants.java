@@ -1,5 +1,7 @@
 package com.easybytes.loans.constants;
 
+import java.math.BigDecimal;
+
 public final class LoansConstants {
 
 
@@ -10,7 +12,7 @@ public final class LoansConstants {
     public static final String HOME_LOAN = "HOME";
     public static final String PERSONAL_LOAN = "PERSONAL";
     public static final String AUTO_LOAN = "AUTO";
-    public static final int NEW_LOAN_LIMIT = 1_00_000;
+    public static final BigDecimal NEW_LOAN_LIMIT = new BigDecimal("100000.00");
 
     public static final String STATUS_201 = "201";
     public static final String MESSAGE_201 = "Loan created successfully";

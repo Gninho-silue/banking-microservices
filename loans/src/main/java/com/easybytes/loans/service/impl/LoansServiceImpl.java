@@ -11,6 +11,7 @@ import com.easybytes.loans.service.ILoansService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class LoansServiceImpl implements ILoansService {
         loan.setMobileNumber(mobileNumber);
         loan.setLoanType(LoansConstants.PERSONAL_LOAN); // default type; adjust as needed
         loan.setTotalLoan(LoansConstants.NEW_LOAN_LIMIT);
-        loan.setAmountPaid(0);
+        loan.setAmountPaid(BigDecimal.ZERO.setScale(2));
         loan.setOutstandingAmount(LoansConstants.NEW_LOAN_LIMIT);
         loan.setLoanNumber(generateUniqueLoanNumber());
         loansRepository.save(loan);

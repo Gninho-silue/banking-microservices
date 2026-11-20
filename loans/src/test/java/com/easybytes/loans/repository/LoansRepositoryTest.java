@@ -10,6 +10,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,9 +32,9 @@ class LoansRepositoryTest {
         l.setMobileNumber(mobile);
         l.setLoanNumber(loanNumber);
         l.setLoanType("PERSONAL");
-        l.setTotalLoan(100_000);
-        l.setAmountPaid(0);
-        l.setOutstandingAmount(100_000);
+        l.setTotalLoan(new BigDecimal("100000.00"));
+        l.setAmountPaid(new BigDecimal("0.00"));
+        l.setOutstandingAmount(new BigDecimal("100000.00"));
         return loansRepository.saveAndFlush(l);
     }
 
@@ -68,12 +69,12 @@ class LoansRepositoryTest {
     @Test
     void persistsUpdatedAmounts() {
         Loans loan = saveLoan("0644444444", "4444555566667777");
-        loan.setAmountPaid(30_000);
-        loan.setOutstandingAmount(70_000);
+        loan.setAmountPaid(new BigDecimal("30000.00"));
+        loan.setOutstandingAmount(new BigDecimal("70000.00"));
         loansRepository.saveAndFlush(loan);
 
         Loans reloaded = loansRepository.findById(loan.getLoanId()).orElseThrow();
-        assertThat(reloaded.getAmountPaid()).isEqualTo(30_000);
-        assertThat(reloaded.getOutstandingAmount()).isEqualTo(70_000);
+        assertThat(reloaded.getAmountPaid()).isEqualTo(new BigDecimal("30000.00"));
+        assertThat(reloaded.getOutstandingAmount()).isEqualTo(new BigDecimal("70000.00"));
     }
 }

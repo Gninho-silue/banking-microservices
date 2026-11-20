@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Schema(name = "Loan", description = "Schema to hold Loan information")
 public class LoansDto {
@@ -25,16 +27,19 @@ public class LoansDto {
 
     @Schema(description = "Total loan amount")
     @NotNull
-    @Min(value = 0, message = "Total loan must be >= 0")
-    private Integer totalLoan;
+    @DecimalMin(value = "0.00", message = "Total loan must be >= 0")
+    @Digits(integer = 17, fraction = 2, message = "Amount must have at most 17 digits and 2 decimals")
+    private BigDecimal totalLoan;
 
     @Schema(description = "Amount already paid")
     @NotNull
-    @Min(value = 0, message = "Amount paid must be >= 0")
-    private Integer amountPaid;
+    @DecimalMin(value = "0.00", message = "Amount paid must be >= 0")
+    @Digits(integer = 17, fraction = 2, message = "Amount must have at most 17 digits and 2 decimals")
+    private BigDecimal amountPaid;
 
     @Schema(description = "Outstanding amount")
     @NotNull
-    @Min(value = 0, message = "Outstanding amount must be >= 0")
-    private Integer outstandingAmount;
+    @DecimalMin(value = "0.00", message = "Outstanding amount must be >= 0")
+    @Digits(integer = 17, fraction = 2, message = "Amount must have at most 17 digits and 2 decimals")
+    private BigDecimal outstandingAmount;
 }
