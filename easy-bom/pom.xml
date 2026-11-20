@@ -104,6 +104,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- No spring-boot-starter-parent here, so -parameters must be enabled explicitly:
+                 Spring MVC / OpenFeign resolve @RequestParam / @PathVariable names via reflection. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
