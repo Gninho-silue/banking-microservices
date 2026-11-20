@@ -219,6 +219,9 @@ cd accounts            # or loans, cards, message, gatewayserver, configserver, 
 
 - Helm charts and Kubernetes manifests don't declare Redis yet: the cards rate limiter only works with docker-compose.
 - The amortization schedule is theoretical: it starts from the original loan amount and ignores repayments already made (`amountPaid`).
+- No schema migrations: each `schema.sql` only runs `CREATE TABLE IF NOT EXISTS`, so an existing database does not get new columns (`balance`, loan terms) and has to be recreated.
+- Transfer notifications can be duplicated: events are delivered at-least-once and carry `transferId`, but the `transferNotification` consumer does not de-duplicate on it yet.
+- The `curl` examples through the gateway have not been replayed end to end: they need a Keycloak client configured by hand, and the loans/cards route rewrite produces a double `/` that is untested.
 
 ## Project layout
 
