@@ -73,12 +73,12 @@ Dans **accounts** :
 
 ## Étape 3 — Échéancier de prêt (amortissement)
 Dans **loans** :
-- [ ] Migrer `totalLoan`, `amountPaid`, `outstandingAmount` de `Integer` vers `BigDecimal` (`DECIMAL(19,2)`) — entité, DTO, mapper, `schema.sql`, tests de l'étape 1 adaptés.
-- [ ] Ajouter `annualInterestRate DECIMAL(5,4)`, `termMonths INT`, `startDate DATE` (valeurs par défaut cohérentes à la création).
-- [ ] Classe pure `AmortizationCalculator` (sans Spring) : méthode à mensualités constantes, `M = P·r / (1 − (1+r)^−n)`, `r = taux annuel / 12`. Gérer `r = 0`. Calculs en `BigDecimal` avec `MathContext.DECIMAL64`, arrondi à 2 décimales ; **la dernière échéance absorbe l'écart d'arrondi** pour que le capital restant finisse exactement à 0.
-- [ ] Endpoint `GET /api/loans/schedule?mobileNumber=...` (cohérent avec l'API existante) → liste `{n, dueDate, payment, interest, principal, remaining}` + totaux.
-- [ ] Tests : valeur de référence **100 000 à 5 % sur 12 mois ⇒ mensualité 8 560,75** ; somme des principaux = capital ; dernier `remaining` = 0.00 ; taux 0 ; validation des entrées (taux négatif, durée 0 → 400).
-- [ ] Commits (en TDD, tests inclus) : `refactor(loans): use BigDecimal for monetary amounts`, `feat(loans): amortization schedule` → push.
+- [x] Migrer `totalLoan`, `amountPaid`, `outstandingAmount` de `Integer` vers `BigDecimal` (`DECIMAL(19,2)`) — entité, DTO, mapper, `schema.sql`, tests de l'étape 1 adaptés.
+- [x] Ajouter `annualInterestRate DECIMAL(5,4)`, `termMonths INT`, `startDate DATE` (valeurs par défaut cohérentes à la création).
+- [x] Classe pure `AmortizationCalculator` (sans Spring) : méthode à mensualités constantes, `M = P·r / (1 − (1+r)^−n)`, `r = taux annuel / 12`. Gérer `r = 0`. Calculs en `BigDecimal` avec `MathContext.DECIMAL64`, arrondi à 2 décimales ; **la dernière échéance absorbe l'écart d'arrondi** pour que le capital restant finisse exactement à 0.
+- [x] Endpoint `GET /api/loans/schedule?mobileNumber=...` (cohérent avec l'API existante) → liste `{n, dueDate, payment, interest, principal, remaining}` + totaux.
+- [x] Tests : valeur de référence **100 000 à 5 % sur 12 mois ⇒ mensualité 8 560,75** ; somme des principaux = capital ; dernier `remaining` = 0.00 ; taux 0 ; validation des entrées (taux négatif, durée 0 → 400).
+- [x] Commits (en TDD, tests inclus) : `refactor(loans): use BigDecimal for monetary amounts`, `feat(loans): amortization schedule` → push.
 
 ## Étape 4 — CI GitHub Actions (build + tests, pas de déploiement)
 - [ ] `.github/workflows/ci.yml` : déclenché sur `push` et `pull_request` vers `main`.
