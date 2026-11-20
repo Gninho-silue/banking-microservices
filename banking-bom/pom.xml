@@ -43,9 +43,6 @@
         <jacoco.version>0.8.13</jacoco.version>
         <jacoco.service.line.minimum>0.70</jacoco.service.line.minimum>
     </properties>
-    <modules>
-        <module>common</module>
-    </modules>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

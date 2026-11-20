@@ -37,11 +37,10 @@ jobs:
             banking-bom/pom.xml
             ${{ matrix.service }}/pom.xml
 
-      # Services inherit from banking-bom (relativePath). Install the parent POM only (-N):
-      # no service depends on the banking-bom/common module.
+      # Services inherit from banking-bom (relativePath); install it first.
       - name: Install banking-bom parent POM
         working-directory: banking-bom
-        run: ./mvnw -B -N install
+        run: ./mvnw -B install
 
       # Testcontainers (MySQL, Kafka) uses the Docker engine available on ubuntu-latest.
       - name: Build and test
