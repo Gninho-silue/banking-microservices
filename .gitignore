@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local runtime data / secrets ###
+docker-compose/**/.data/
+**/target/
+.env
+*.log
